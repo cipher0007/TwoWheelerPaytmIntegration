@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "648258288764",
+    "firebase_url": "https://wheeler-d2c0f.firebaseio.com",
+    "project_id": "wheeler-d2c0f",
+    "storage_bucket": "wheeler-d2c0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648258288764:android:5708d93bdd9627bb",
+        "android_client_info": {
+          "package_name": "com.cipher0007.twowheeler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648258288764-hpqopclai95rp1mn1lu7br82r9h8qcu8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cipher0007.twowheeler",
+            "certificate_hash": "3e5328987d1192ae4348dd2ffeda4c44c9429dc8"
+          }
+        },
+        {
+          "client_id": "648258288764-q9knpsbkm665bqkg9q0jtatfctkg3k72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXt7f__Nsvt32b_ChJOp15gdSBcMekc2Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648258288764-q9knpsbkm665bqkg9q0jtatfctkg3k72.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
