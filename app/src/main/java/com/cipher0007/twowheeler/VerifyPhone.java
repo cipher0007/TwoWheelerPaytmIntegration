@@ -46,7 +46,8 @@ public class VerifyPhone extends AppCompatActivity {
 
         phoneNumber = getIntent().getStringExtra("phoneNumber");
         _deviceToken = getIntent().getStringExtra("deviceToken");
-
+        String substr=phoneNumber.substring(3);
+        new SharedPrefManager(this).savePhoneNumber(substr,true);
         initViews();
 
         startFirebaseLogin();
@@ -110,10 +111,6 @@ public class VerifyPhone extends AppCompatActivity {
         });
 
 
-
-
-
-
     }
 
     private void ResendOtp() {
@@ -158,10 +155,10 @@ public class VerifyPhone extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         fabProgressCircle.beginFinalAnimation();
-                        Intent intent = new Intent(VerifyPhone.this, MainActivity.class);
+                        Intent intent = new Intent(VerifyPhone.this, UserDetail.class);
                         intent.putExtra("phoneNumber", phoneNumber);
                         intent.putExtra("deviceToken", _deviceToken);
-                       // overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        // overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         startActivity(intent);
                         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         finish();
@@ -182,12 +179,12 @@ public class VerifyPhone extends AppCompatActivity {
                 fabProgressCircle.show();
                 fabProgressCircle.beginFinalAnimation();
                 fabProgressCircle.onCompleteFABAnimationEnd();
-               // Toast.makeText(VerifyPhone.this, "verification completed", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(VerifyPhone.this, MainActivity.class);
-                intent.putExtra("phoneNumber", phoneNumber);
-                intent.putExtra("deviceToken", _deviceToken);
+                // Toast.makeText(VerifyPhone.this, "verification completed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(VerifyPhone.this, UserDetail.class);
+//                intent.putExtra("phoneNumber", phoneNumber);
+//                intent.putExtra("deviceToken", _deviceToken);
 
-              //  overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                //  overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
