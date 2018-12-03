@@ -7,6 +7,8 @@ import instamojo.library.InstamojoPay;
 import instamojo.library.Config;
 import org.json.JSONObject;
 import org.json.JSONException;
+import org.w3c.dom.Text;
+
 import android.content.IntentFilter;
 import android.widget.Toast;
 import android.graphics.Typeface;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 private RelativeLayout bookNow;
+private String SERVER_KEY="AIzaSyDtcoeXo7YyBSzrMp3LuD6UM5giIGg0JWM";
 
     
 
@@ -26,13 +29,21 @@ private RelativeLayout bookNow;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Call the function callInstamojo to start payment here
-        bookNow=findViewById(R.id.btnBookNow);
+        TextView txtbook=findViewById(R.id.txtbook);
+        TextView txtprice=findViewById(R.id.txtprice);
+        Typeface bold = Typeface.createFromAsset(getAssets(),
+                "Montserrat-Light.otf");
+        txtbook.setTypeface(bold);
+        txtprice.setTypeface(bold);
+
+
+        RelativeLayout bookNow=findViewById(R.id.btnBookNow);
         bookNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(MainActivity.this,ConfirmBookingFinal.class);
                 startActivity(intent);
+
             }
         });
 

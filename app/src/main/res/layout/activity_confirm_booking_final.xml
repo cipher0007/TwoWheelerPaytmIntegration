@@ -16,30 +16,70 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
+            android:id="@+id/txtconfrmbook"
             android:text="You Are One Step To Go."
-            android:textSize="30sp"
+            android:layout_marginBottom="10dp"
+            android:textSize="25sp"
             />
-        <ImageView
-            android:layout_margin="10dp"
+        <View
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_motorcycle"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/btnConfirmbook1"
-        android:layout_alignParentBottom="true"
-        android:background="#33691E">
+            android:layout_height="1dp"
+            android:background="@color/white"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Confirm Booking"
-            android:textSize="18sp"
             android:textColor="@color/white"
-            android:gravity="center"/>
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/txtconfrmbook1"
+            android:text="Confirm your booking and wnjoy the ride in the lap of nature"
+            android:textSize="14sp"
+            />
+        <!--<ImageView-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:src="@drawable/ic_motorcycle"-->
+            <!--/>-->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="mapmarker.json"
+            app:lottie_loop="true" />
+
     </LinearLayout>
+    <com.github.jorgecastilloprz.FABProgressCircle
+        android:id="@+id/fabProgressCircle11"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"
+        app:arcWidth="3dp"
+        >
+
+        <!-- You can change it with the fab from the library you want to use -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btnCnfrmbook"
+            android:layout_width="wrap_content"
+            app:backgroundTint="#B2C248"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+            app:rippleColor="@color/colorPrimaryDark"
+            app:elevation="10dp"
+            app:useCompatPadding="true"
+            app:borderWidth="0dp"
+            />
+
+    </com.github.jorgecastilloprz.FABProgressCircle>
 
 </RelativeLayout>

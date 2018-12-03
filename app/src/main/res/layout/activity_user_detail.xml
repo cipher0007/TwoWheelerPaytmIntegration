@@ -3,117 +3,178 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-android:fitsSystemWindows="true"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+   >
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/pattern_background" />
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_centerInParent="true"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
-        android:layout_gravity="center"
-        android:layout_margin="28dp"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/ic_racing" />
-
-
-        <EditText
-            android:id="@+id/FirstNameUser"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/button3"
-            android:cursorVisible="false"
-            android:textColorHint="@color/edit_text_color"
-            android:textColor="@color/edit_text_color"
-            android:maxLines="1"
-            android:inputType="text"
-            android:hint="First Name"
-            android:padding="12dp" />
+            android:layout_height="match_parent"
 
-        <EditText
-            android:id="@+id/LastNameUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textColor="@color/edit_text_color"
-            android:textColorHint="@color/edit_text_color"
-            android:inputType="text"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/button3"
-            android:cursorVisible="false"
-            android:hint="Last Name"
-            android:padding="12dp" />
+            android:layout_margin="28dp"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/EmailIdUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:maxLines="1"
-            android:textColor="@color/edit_text_color"
-            android:textColorHint="@color/edit_text_color"
-            android:inputType="text"
-            android:background="@drawable/button3"
-            android:cursorVisible="false"
-            android:hint="Email Address"
-            android:padding="12dp" />
-        <!--<RadioGroup-->
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/ic_racing" />
+
+
+            <EditText
+                android:id="@+id/FirstNameUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button3"
+                android:cursorVisible="false"
+                android:hint="First Name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/edit_text_color"
+                android:textColorHint="@color/edit_text_color" />
+
+            <EditText
+                android:id="@+id/LastNameUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button3"
+                android:cursorVisible="false"
+                android:hint="Last Name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/edit_text_color"
+                android:textColorHint="@color/edit_text_color" />
+
+            <EditText
+                android:id="@+id/EmailIdUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button3"
+                android:cursorVisible="false"
+                android:hint="Email Address"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColor="@color/edit_text_color"
+                android:textColorHint="@color/edit_text_color" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/btnDrivingLicence"
+                    android:background="@drawable/button3"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="Upload Driving Licence"
+                    android:textAllCaps="false"
+                    android:textColor="@color/edit_text_color" />
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/imgDrivingLicnce"
+                    android:layout_width="90dp"
+
+                    android:layout_height="90dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                  />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/button3"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:id="@+id/btnAadharCard"
+                    android:text="Upload Aadhar Card"
+                    android:textAllCaps="false"
+                    android:textColor="@color/edit_text_color" />
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/imgAadhar"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                   />
+            </LinearLayout>
+            <!--<RadioGroup-->
             <!--android:id="@+id/gender"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="45dp"-->
             <!--android:layout_below="@+id/imagemf"-->
 
-          <!---->
+            <!---->
             <!--android:background="@drawable/line_out"-->
             <!--android:checkedButton="@+id/male"-->
             <!--android:orientation="horizontal">-->
 
             <!--<RadioButton-->
-                <!--android:id="@+id/male"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_marginBottom="1dp"-->
-                <!--android:layout_marginLeft="1dp"-->
-                <!--android:layout_marginTop="1dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/toggle_widget_background"-->
-                <!--android:button="@null"-->
-                <!--android:gravity="center"-->
-                <!--android:text="Male"-->
-                <!--android:textColor="@color/white" />-->
+            <!--android:id="@+id/male"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginBottom="1dp"-->
+            <!--android:layout_marginLeft="1dp"-->
+            <!--android:layout_marginTop="1dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/toggle_widget_background"-->
+            <!--android:button="@null"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Male"-->
+            <!--android:textColor="@color/white" />-->
 
             <!--<RadioButton-->
-                <!--android:id="@+id/female"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_marginBottom="1dp"-->
-                <!--android:layout_marginRight="1dp"-->
-                <!--android:layout_marginTop="1dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/toggle_widget_background"-->
-                <!--android:button="@null"-->
-                <!--android:gravity="center"-->
-                <!--android:text="Female"-->
-                <!--android:textColor="@color/white" />-->
-        <!--</RadioGroup>-->
+            <!--android:id="@+id/female"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginBottom="1dp"-->
+            <!--android:layout_marginRight="1dp"-->
+            <!--android:layout_marginTop="1dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/toggle_widget_background"-->
+            <!--android:button="@null"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Female"-->
+            <!--android:textColor="@color/white" />-->
+            <!--</RadioGroup>-->
 
 
-        <!--<Button-->
+            <!--<Button-->
             <!--android:id="@+id/SubmitButtonUser"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="wrap_content"-->
@@ -121,29 +182,27 @@ android:fitsSystemWindows="true"
             <!--android:background="@drawable/green_button"-->
             <!--android:text="Submit"-->
             <!--android:textColor="@color/white" />-->
-        <com.github.jorgecastilloprz.FABProgressCircle
-            android:id="@+id/fabProgressCircle1"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-
-            android:layout_height="wrap_content"
-            app:arcWidth="3dp"
-            >
-
-            <!-- You can change it with the fab from the library you want to use -->
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/SubmitButtonUser"
+            <com.github.jorgecastilloprz.FABProgressCircle
+                android:id="@+id/fabProgressCircle1"
                 android:layout_width="wrap_content"
-                app:backgroundTint="#B2C248"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-                app:rippleColor="@color/colorPrimaryDark"
-                app:elevation="10dp"
-                app:useCompatPadding="true"
-                app:borderWidth="0dp"
-                />
 
-        </com.github.jorgecastilloprz.FABProgressCircle>
-    </LinearLayout>
+                android:layout_gravity="center"
+                app:arcWidth="3dp">
+
+                <!-- You can change it with the fab from the library you want to use -->
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/SubmitButtonUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+                    app:backgroundTint="#B2C248"
+                    app:borderWidth="0dp"
+                    app:elevation="10dp"
+                    app:rippleColor="@color/colorPrimaryDark"
+                    app:useCompatPadding="true" />
+
+            </com.github.jorgecastilloprz.FABProgressCircle>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

@@ -18,15 +18,17 @@
         android:text="Two Wheeler"
         android:id="@+id/txtAppName"
 
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="50dp"
         android:textColor="@color/white"
-        android:textSize="30sp"/>
-    <ImageView
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:textSize="35sp"/>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="200dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_racing"
-        android:layout_centerInParent="true"/>
+        android:layout_height="200dp"
+        app:lottie_fileName="cycle.json"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true" />
 </LinearLayout>
 
 </RelativeLayout>

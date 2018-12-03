@@ -17,7 +17,7 @@ public class SplashScreen extends AppCompatActivity {
 
         txtview=findViewById(R.id.txtAppName);
         Typeface bold = Typeface.createFromAsset(getAssets(),
-                "Montserrat-SemiBold.otf");
+                "Montserrat-Light.otf");
         txtview.setTypeface(bold);
 
         new Handler().postDelayed(new Runnable() {

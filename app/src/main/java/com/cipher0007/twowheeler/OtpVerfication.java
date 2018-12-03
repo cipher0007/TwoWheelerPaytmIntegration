@@ -155,6 +155,11 @@ public class OtpVerfication extends AppCompatActivity {
                 startActivity(intent);
             }
         }
+        if (new SharedPrefManager(getApplicationContext()).isLoggedIn()) {
+            Intent intent = new Intent(this, MapActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
 
 
     }
