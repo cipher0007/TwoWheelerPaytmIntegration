@@ -7,19 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".MapActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:elevation="10dp"
-        android:layout_margin="10dp"
-       >
+
         <FrameLayout
           android:layout_gravity="center"
-            android:layout_alignParentRight="true"
-            android:layout_width="30dp"
-            android:background="@drawable/ic_share"
-            android:layout_height="30dp"></FrameLayout>
-    </RelativeLayout>
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:elevation="20dp"
+            android:id="@+id/navIcon"
+            android:layout_margin="20dp"
+            android:background="@drawable/ic_menu_black_24dp"
+            android:layout_height="wrap_content"></FrameLayout>
+
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -27,49 +25,49 @@
         android:layout_height="match_parent"
         tools:context=".MapActivity" />
 
-    <RelativeLayout
-        android:id="@+id/btnBookNow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/button1">
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/btnBookNow"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="16dp"-->
+        <!--android:clickable="true"-->
+        <!--android:foreground="?attr/selectableItemBackgroundBorderless"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="@drawable/button1">-->
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:layout_marginLeft="50dp"-->
+        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_centerInParent="true"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_marginLeft="50dp"&ndash;&gt;-->
 
-            <!--android:layout_marginRight="50dp"-->
-            <!--android:gravity="center"-->
-            <!--android:orientation="vertical">-->
-
-            <TextView
-                android:id="@+id/txtbook"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:text="Book Now"
-
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+            <!--&lt;!&ndash;android:layout_marginRight="50dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:orientation="vertical">&ndash;&gt;-->
 
             <!--<TextView-->
-                <!--android:id="@+id/txtprice"-->
+                <!--android:id="@+id/txtbook"-->
+
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
 
-                <!--android:padding="3dp"-->
-                <!--android:text="Rs. 350/-"-->
+                <!--android:text="Book Now"-->
+
                 <!--android:textColor="@color/white"-->
-                <!--android:textSize="17sp" />-->
-        <!--</LinearLayout>-->
-    </RelativeLayout>
+                <!--android:textSize="18sp" />-->
+
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/txtprice"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+
+                <!--&lt;!&ndash;android:padding="3dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:text="Rs. 350/-"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textColor="@color/white"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:textSize="17sp" />&ndash;&gt;-->
+        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+    <!--</RelativeLayout>-->
 
 </RelativeLayout>
 

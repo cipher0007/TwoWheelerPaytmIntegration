@@ -8,16 +8,27 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.location.Location;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cipher0007.twowheeler.Helpers.FetchURL;
 import com.cipher0007.twowheeler.Helpers.TaskLoadedCallback;
+import com.cipher0007.twowheeler.OtpVerification.SharedPrefManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,48 +43,109 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, NavigationView.OnNavigationItemSelectedListener {
     LatLng clementtown, Mylocation;
     private Polyline currentPolyline;
     private MarkerOptions place1, place2;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
-   // ArrayList<LatLng> MarkerPoints;
+    private LinearLayout layoutBottomSheet;
+    private BottomSheetBehavior sheetBehavior;
+    // ArrayList<LatLng> MarkerPoints;
+    private LinearLayout btn2h, btn4h, btn6h, btnfull;
+    private TextView txtHeaderName, txtHeaderNo;
+    private FrameLayout navicon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        TextView txtbook = findViewById(R.id.txtbook);
+        setContentView(R.layout.activity_navigation);
+        TextView txtbook = findViewById(R.id.txtbookride);
         // TextView txtprice = findViewById(R.id.txtprice);
         Typeface bold = Typeface.createFromAsset(getAssets(),
-                "Montserrat-Light.otf");
+                "Montserrat-Regular.otf");
         txtbook.setTypeface(bold);
 //        txtprice.setTypeface(bold);
-
-
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        RelativeLayout bookNow = findViewById(R.id.btnBookNow);
-
-        bookNow.setOnClickListener(new View.OnClickListener() {
+        navicon = findViewById(R.id.navIcon);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navicon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
-                startActivity(intent);
+                drawer.openDrawer(Gravity.LEFT);
+            }
+        });
+        layoutBottomSheet = findViewById(R.id.bottom_sheet);
+
+        sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
+
+
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.addDrawerListener(toggle);
+        // toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        //TextView navUsername = (TextView) headerView.findViewById(R.id.navUsername);
+        //navUsername.setText("Your Text Here");
+        SharedPrefManager sharedPrefManager = new SharedPrefManager(MapActivity.this);
+        txtHeaderName = headerView.findViewById(R.id.txtHeaderName);
+        txtHeaderNo = headerView.findViewById(R.id.txtHeaderNo);
+        txtHeaderName.setText(sharedPrefManager.getFirstName() + " " + sharedPrefManager.getLastName());
+        txtHeaderNo.setText(sharedPrefManager.getPhoneNumber());
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        // RelativeLayout bookNow = findViewById(R.id.btnBookNow);
+
+//        bookNow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+////                    if (sheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+////                        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+////                        //btnBottomSheet.setText("Close sheet");
+////                    } else {
+////                        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+////                       // btnBottomSheet.setText("Expand sheet");
+////                    }
+//
+////                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
+////                startActivity(intent);
+//
+//            }
+//        });
+
+        sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED: {
+                        // btnBottomSheet.setText("Close Sheet");
+                    }
+                    break;
+                    case BottomSheetBehavior.STATE_COLLAPSED: {
+                        // btnBottomSheet.setText("Expand Sheet");
+                    }
+                    break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        break;
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
 
             }
         });
 
 
-
-
-
-
         place1 = new MarkerOptions().position(new LatLng(30.2653, 78.0110)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 100, 100)));
         place2 = new MarkerOptions().position(new LatLng(30.355977, 78.085342)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 100, 100)));
-
-
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -81,8 +153,55 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-     //   MarkerPoints = new ArrayList<>();
+        //   MarkerPoints = new ArrayList<>();
+        initButton();
+    }
 
+    private void initButton() {
+
+        btn2h = findViewById(R.id.btn2hRide);
+        btn4h = findViewById(R.id.btn4hRide);
+        btn6h = findViewById(R.id.btn6hRide);
+        btnfull = findViewById(R.id.btnFullDayRide);
+
+        btn2h.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
+                intent.putExtra("price", "90");
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+
+        btn4h.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
+                intent.putExtra("price", "180");
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+
+        btn6h.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
+                intent.putExtra("price", "250");
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+        btnfull.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
+                intent.putExtra("price", "450");
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
@@ -107,8 +226,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
-
-
 
 
     @Override
@@ -163,20 +280,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                         mMap.addMarker(new MarkerOptions().position(Mylocation).title("It's Me").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("pin", 100, 100))));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(Mylocation));
-                        mMap.animateCamera(CameraUpdateFactory.zoomTo(11.0f));
+                        mMap.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
                         if (location != null) {
 
                         }
                     }
                 });
 
-mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        new FetchURL(MapActivity.this).execute(getUrl(marker.getPosition(), Mylocation, "driving"), "driving");
-        return false;
-    }
-});
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                new FetchURL(MapActivity.this).execute(getUrl(marker.getPosition(), Mylocation, "driving"), "driving");
+                return false;
+            }
+        });
 
         // Add a marker in Sydney and move the camera
 //        clementtown = new LatLng(30.2653, 78.0110);
@@ -197,5 +314,26 @@ mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

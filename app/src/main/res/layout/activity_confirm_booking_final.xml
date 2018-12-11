@@ -36,7 +36,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:id="@+id/txtconfrmbook1"
-            android:text="Confirm your booking and wnjoy the ride in the lap of nature"
+            android:text="Confirm your payment and enjoy the ride in the lap of nature"
             android:textSize="14sp"
             />
         <!--<ImageView-->

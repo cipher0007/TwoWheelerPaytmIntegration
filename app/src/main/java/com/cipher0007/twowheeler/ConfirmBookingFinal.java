@@ -23,6 +23,7 @@ import instamojo.library.InstapayListener;
 public class ConfirmBookingFinal extends AppCompatActivity {
     private FloatingActionButton btnbook;
     FABProgressCircle fabProgressCircle;
+    private String price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +33,20 @@ public class ConfirmBookingFinal extends AppCompatActivity {
         fabProgressCircle = findViewById(R.id.fabProgressCircle11);
         TextView txtcnrmbook = findViewById(R.id.txtconfrmbook);
         TextView txtcnrmbook1 = findViewById(R.id.txtconfrmbook1);
+
         Typeface bold = Typeface.createFromAsset(getAssets(),
                 "Montserrat-Light.otf");
         txtcnrmbook.setTypeface(bold);
         txtcnrmbook1.setTypeface(bold);
+
+        Bundle extras = getIntent().getExtras();
+
+
+        if (extras != null) {
+            price = extras.getString("price");
+            txtcnrmbook1.setText("Confirm your payment of ₹ "+price+" and enjoy the ride in the lap of nature");
+            // and get whatever type user account id is
+        }
         btnbook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,7 +54,7 @@ public class ConfirmBookingFinal extends AppCompatActivity {
                 fabProgressCircle.beginFinalAnimation();
                 SharedPrefManager sharedPrefManager = new SharedPrefManager(ConfirmBookingFinal.this);
                 //Toast.makeText(ConfirmBookingFinal.this, sharedPrefManager.getEmail()+"\n"+sharedPrefManager.getPhoneNumber(), Toast.LENGTH_SHORT).show();
-                callInstamojoPay(sharedPrefManager.getEmail(), sharedPrefManager.getPhoneNumber(), "11", "Booked a bike",
+                callInstamojoPay(sharedPrefManager.getEmail(), sharedPrefManager.getPhoneNumber(), price, "Rent a Scooty from Easy Scooter",
                         sharedPrefManager.getFirstName() + " " + sharedPrefManager.getLastName());
             }
         });

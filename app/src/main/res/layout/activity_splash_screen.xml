@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Two Wheeler"
+        android:text="Easy Scooter"
         android:id="@+id/txtAppName"
 
         android:layout_marginBottom="50dp"
