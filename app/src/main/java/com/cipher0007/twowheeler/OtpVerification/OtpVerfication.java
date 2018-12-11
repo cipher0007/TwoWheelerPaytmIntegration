@@ -1,4 +1,4 @@
-package com.cipher0007.twowheeler;
+package com.cipher0007.twowheeler.OtpVerification;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cipher0007.twowheeler.MapActivity;
+import com.cipher0007.twowheeler.R;
 import com.github.jorgecastilloprz.FABProgressCircle;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthProvider;

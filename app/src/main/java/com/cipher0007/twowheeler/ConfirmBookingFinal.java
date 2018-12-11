@@ -8,10 +8,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cipher0007.twowheeler.OtpVerification.SharedPrefManager;
 import com.github.jorgecastilloprz.FABProgressCircle;
 
 import org.json.JSONException;
@@ -21,16 +21,17 @@ import instamojo.library.InstamojoPay;
 import instamojo.library.InstapayListener;
 
 public class ConfirmBookingFinal extends AppCompatActivity {
-private FloatingActionButton btnbook;
+    private FloatingActionButton btnbook;
     FABProgressCircle fabProgressCircle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_booking_final);
-        btnbook=findViewById(R.id.btnCnfrmbook);
+        btnbook = findViewById(R.id.btnCnfrmbook);
         fabProgressCircle = findViewById(R.id.fabProgressCircle11);
-        TextView txtcnrmbook=findViewById(R.id.txtconfrmbook);
-        TextView txtcnrmbook1=findViewById(R.id.txtconfrmbook1);
+        TextView txtcnrmbook = findViewById(R.id.txtconfrmbook);
+        TextView txtcnrmbook1 = findViewById(R.id.txtconfrmbook1);
         Typeface bold = Typeface.createFromAsset(getAssets(),
                 "Montserrat-Light.otf");
         txtcnrmbook.setTypeface(bold);
@@ -40,13 +41,14 @@ private FloatingActionButton btnbook;
             public void onClick(View view) {
                 fabProgressCircle.show();
                 fabProgressCircle.beginFinalAnimation();
-                SharedPrefManager sharedPrefManager=new SharedPrefManager(ConfirmBookingFinal.this);
+                SharedPrefManager sharedPrefManager = new SharedPrefManager(ConfirmBookingFinal.this);
                 //Toast.makeText(ConfirmBookingFinal.this, sharedPrefManager.getEmail()+"\n"+sharedPrefManager.getPhoneNumber(), Toast.LENGTH_SHORT).show();
-                callInstamojoPay(sharedPrefManager.getEmail(),sharedPrefManager.getPhoneNumber(),"11","Booked a bike",
-                        sharedPrefManager.getFirstName()+" "+sharedPrefManager.getLastName());
+                callInstamojoPay(sharedPrefManager.getEmail(), sharedPrefManager.getPhoneNumber(), "11", "Booked a bike",
+                        sharedPrefManager.getFirstName() + " " + sharedPrefManager.getLastName());
             }
         });
     }
+
     private void callInstamojoPay(String email, String phone, String amount, String purpose, String buyername) {
         final Activity activity = this;
         InstamojoPay instamojoPay = new InstamojoPay();
@@ -75,6 +77,9 @@ private FloatingActionButton btnbook;
         listener = new InstapayListener() {
             @Override
             public void onSuccess(String response) {
+                String rearray[] = response.split(":");
+                String orderid = rearray[1].substring(rearray[1].indexOf("-") + 1);
+                Toast.makeText(getApplicationContext(), orderid, Toast.LENGTH_SHORT).show();
                 fabProgressCircle.beginFinalAnimation();
                 fabProgressCircle.onCompleteFABAnimationEnd();
                 Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG)

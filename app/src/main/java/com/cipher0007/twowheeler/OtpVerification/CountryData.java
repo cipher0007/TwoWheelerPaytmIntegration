@@ -1,4 +1,4 @@
-package com.cipher0007.twowheeler;
+package com.cipher0007.twowheeler.OtpVerification;
 
 public class CountryData {
     public static final String[] countryNames = {"India","Afghanistan", "Albania",

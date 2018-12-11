@@ -1,4 +1,4 @@
-package com.cipher0007.twowheeler;
+package com.cipher0007.twowheeler.OtpVerification;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,7 +7,7 @@ public class SharedPrefManager {
 
     Context context;
 
-    SharedPrefManager(Context context) {
+    public SharedPrefManager(Context context) {
         this.context = context;
 
     }
