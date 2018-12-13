@@ -12,13 +12,25 @@ public class SharedPrefManager {
 
     }
 
-    public void saveLoginDetails(String firstName, String lastName, String email ,Boolean isLoggedin) {
+    public void Ridetime(String time) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("RideTime", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("time", time);
+        editor.commit();
+    }
+
+    public String getRideTime() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("RideTime", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("time", "");
+    }
+
+    public void saveLoginDetails(String firstName, String lastName, String email, Boolean isLoggedin) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("firstName", firstName);
         editor.putString("lastName", lastName);
         editor.putString("email", email);
-        editor.putBoolean("islogin",isLoggedin);
+        editor.putBoolean("islogin", isLoggedin);
         editor.commit();
     }
 
@@ -26,18 +38,20 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("phn", phn);
-        editor.putBoolean("numberchck",isLogin);
+        editor.putBoolean("numberchck", isLogin);
         editor.commit();
     }
-    public boolean OtpVerified(){
+
+    public boolean OtpVerified() {
         SharedPreferences sharedPreferences = context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-        return  sharedPreferences.getBoolean("numberchck", false);
+        return sharedPreferences.getBoolean("numberchck", false);
     }
 
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         SharedPreferences sharedPreferences = context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
-        return  sharedPreferences.getBoolean("islogin", false);
+        return sharedPreferences.getBoolean("islogin", false);
     }
+
     public String getPhoneNumber() {
         SharedPreferences sharedPreferences = context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
         return sharedPreferences.getString("phn", "");

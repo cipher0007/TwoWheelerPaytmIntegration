@@ -77,6 +77,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         layoutBottomSheet = findViewById(R.id.bottom_sheet);
 
         sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -157,8 +158,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         initButton();
     }
 
-    private void initButton() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        place1 = new MarkerOptions().position(new LatLng(30.2653, 78.0110)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 100, 100)));
+        place2 = new MarkerOptions().position(new LatLng(30.355977, 78.085342)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 100, 100)));
 
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    private void initButton() {
+SharedPrefManager save=new SharedPrefManager(getApplicationContext());
         btn2h = findViewById(R.id.btn2hRide);
         btn4h = findViewById(R.id.btn4hRide);
         btn6h = findViewById(R.id.btn6hRide);
@@ -167,8 +181,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         btn2h.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
-                intent.putExtra("price", "90");
+                save.Ridetime("2");
+                Intent intent = new Intent(MapActivity.this, CurrentTrip.class);
+             //   intent.putExtra("price", "90");
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
@@ -177,6 +192,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         btn4h.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                save.Ridetime("4");
                 Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
                 intent.putExtra("price", "180");
                 startActivity(intent);
@@ -187,6 +203,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         btn6h.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                save.Ridetime("6");
                 Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
                 intent.putExtra("price", "250");
                 startActivity(intent);
@@ -196,6 +213,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         btnfull.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                save.Ridetime("0");
                 Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
                 intent.putExtra("price", "450");
                 startActivity(intent);

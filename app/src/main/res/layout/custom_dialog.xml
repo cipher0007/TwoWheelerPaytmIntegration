@@ -91,8 +91,9 @@
             <!-- You can change it with the fab from the library you want to use -->
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
+                app:backgroundTint="#B2C248"
                 android:layout_width="wrap_content"
-                app:backgroundTint="@color/colorLight"
+
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
                 app:rippleColor="@color/colorLight"
@@ -106,6 +107,7 @@
             android:layout_width="match_parent"
             android:id="@+id/edittext"
             android:padding="5dp"
+
             android:layout_height="wrap_content"
             android:textColor="@color/colorLight"
             android:textSize="14sp"

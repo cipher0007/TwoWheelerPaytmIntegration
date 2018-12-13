@@ -6,11 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryDark"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<ImageView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:src="@drawable/pattern_background"
-    android:scaleType="centerCrop"/>
+
         <ImageView
             android:id="@+id/img"
             android:layout_width="match_parent"
@@ -28,7 +24,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="Get Started! "
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorLight"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -85,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-                    app:backgroundTint="@color/colorPrimary"
+                    app:backgroundTint="#B2C248"
                     app:borderWidth="0dp"
                     app:elevation="2dp"
 
