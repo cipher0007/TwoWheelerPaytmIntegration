@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.cipher0007.twowheeler.OtpVerification.OtpVerfication;
 import com.cipher0007.twowheeler.OtpVerification.SharedPrefManager;
+import com.cipher0007.twowheeler.OtpVerification.UserDetail;
 
 public class SplashScreen extends AppCompatActivity {
     private static int SPLASH_TIME_OUT = 2000;
@@ -45,14 +46,19 @@ public class SplashScreen extends AppCompatActivity {
 
 
                SharedPreferences mpref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                if (mpref.getBoolean("finish", false)) {
+                if (!mpref.getBoolean("finish", false)) {
                     Intent i = new Intent(SplashScreen.this, OtpVerfication.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     // close this activity
                     finish();
                 }else{
-                    Intent i = new Intent(SplashScreen.this, CurrentTrip.class);
+//                    Intent i = new Intent(SplashScreen.this, CurrentTrip.class);
+//                    startActivity(i);
+//                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//                    // close this activity
+//                    finish();
+                    Intent i = new Intent(SplashScreen.this, UserDetail.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     // close this activity

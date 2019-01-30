@@ -75,9 +75,11 @@
 
         <service android:name=".Timer_Service" />
 
-        <activity android:name=".CurrentTrip"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".CurrentTrip"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".IdProofUpload"></activity>
     </application>
 
 </manifest>

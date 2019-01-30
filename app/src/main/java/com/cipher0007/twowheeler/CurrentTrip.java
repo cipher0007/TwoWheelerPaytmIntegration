@@ -150,7 +150,7 @@ public class CurrentTrip extends AppCompatActivity {
 
 
                 btnStartRide.setEnabled(false);
-
+                mEditor.putBoolean("finish", false).commit();
 
                 calendar = Calendar.getInstance();
                 simpleDateFormat = new SimpleDateFormat("HH:mm:ss");

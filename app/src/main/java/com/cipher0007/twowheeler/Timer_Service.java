@@ -117,7 +117,7 @@ public class Timer_Service extends Service {
                 String str_testing = diffHours2 + ":" + diffMinutes2 + ":" + diffSeconds2;
 
                 Log.e("TIME", str_testing);
-
+                mEditor.putBoolean("finish", false).commit();
                 fn_update(str_testing);
             } else {
                 Notif(new SharedPrefManager(getApplicationContext()).getFirstName()+", You are out of Time!","Submit the Scooty at nearest station");
@@ -138,6 +138,7 @@ public class Timer_Service extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mEditor.putBoolean("finish", false).commit();
         Log.e("Service finish","Finish");
     }
 
