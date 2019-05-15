@@ -28,11 +28,10 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="90dp"
         android:layout_marginRight="30dp"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
+
         app:cardCornerRadius="3dp"
         app:cardElevation="50sp"
-        app:contentPadding="5dp">
+       >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,21 +42,39 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="8dp"
+
                 android:src="@drawable/ic_location_on_black_24dp" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="40sp"
-                android:layout_marginRight="8dp"
-                android:background="@color/grey_200" />
+            <!--<View-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="40sp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--android:background="@color/grey_200" />-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pick Up \u0026 Drop Point"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="11sp"
+                    />
 
             <Spinner
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/spinner"
+                style="?android:attr/spinnerItemStyle"
+                android:spinnerMode="dialog"
                 android:prompt="@string/spinner_title"></Spinner>
+            </LinearLayout>
+
+
             <!--<TextView-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="match_parent"-->

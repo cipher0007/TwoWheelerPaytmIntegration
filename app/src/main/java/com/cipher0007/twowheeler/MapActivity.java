@@ -27,9 +27,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,13 +60,14 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, NavigationView.OnNavigationItemSelectedListener {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, NavigationView.OnNavigationItemSelectedListener ,AdapterView.OnItemSelectedListener{
     LatLng clementtown, Mylocation;
     private Polyline currentPolyline;
     private MarkerOptions place1, place2;
@@ -80,11 +84,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         TextView txtbook = findViewById(R.id.txtbookride);
-
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner(spinner);
 
 //        final RatingDialog ratingDialog = new RatingDialog.Builder(this)
 //
@@ -225,6 +230,38 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         for (int i = 0; i < size; i++) {
             navigationView.getMenu().getItem(i).setCheckable(false);
         }
+    }
+
+    private void spinner(Spinner spinner) {
+        // Spinner click listener
+        spinner.setOnItemSelectedListener(this);
+
+        // Spinner Drop down elements
+        List<String> categories = new ArrayList<String>();
+        categories.add("IT park Sahastradhara Road, Near Police Station");
+        categories.add("Item 2");
+        categories.add("Item 3");
+        categories.add("Item 4");
+        categories.add("Item 5");
+        categories.add("Item 6");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
+
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent= new Intent(MainActivity.this,SecondActivity.class);
+//                intent.putExtra("data",String.valueOf(spinner.getSelectedItem()));
+//                startActivity(intent);
+//            }
+//        });
     }
 
 //    private void test() {
@@ -495,4 +532,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         return true;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }
