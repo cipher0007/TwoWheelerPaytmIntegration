@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,13 +41,13 @@ public class ConfirmBookingFinal extends AppCompatActivity {
         txtcnrmbook1.setTypeface(bold);
 
         Bundle extras = getIntent().getExtras();
-
-
-        if (extras != null) {
-            price = extras.getString("price");
-            txtcnrmbook1.setText("Confirm your payment of ₹ "+price+" and enjoy the ride in the lap of nature");
-            // and get whatever type user account id is
-        }
+        price = new SharedPrefManager(getApplicationContext()).getSelectedPrice().substring(2);
+        txtcnrmbook1.setText("Confirm your payment of ₹ " + price + " and enjoy the ride in the lap of nature");
+//        if (extras != null) {
+//            price = extras.getString("price");
+//
+//            // and get whatever type user account id is
+//        }
         btnbook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,7 +55,7 @@ public class ConfirmBookingFinal extends AppCompatActivity {
                 fabProgressCircle.beginFinalAnimation();
                 SharedPrefManager sharedPrefManager = new SharedPrefManager(ConfirmBookingFinal.this);
                 //Toast.makeText(ConfirmBookingFinal.this, sharedPrefManager.getEmail()+"\n"+sharedPrefManager.getPhoneNumber(), Toast.LENGTH_SHORT).show();
-                callInstamojoPay(sharedPrefManager.getEmail(), sharedPrefManager.getPhoneNumber(), price, "Rent a Scooty from Easy Scooter",
+                callInstamojoPay(sharedPrefManager.getEmail(), sharedPrefManager.getPhoneNumber(), "11", "Rent a Scooty from Easy Scooter for " + sharedPrefManager.getSelectedhour(),
                         sharedPrefManager.getFirstName() + " " + sharedPrefManager.getLastName());
             }
         });
@@ -88,9 +89,22 @@ public class ConfirmBookingFinal extends AppCompatActivity {
         listener = new InstapayListener() {
             @Override
             public void onSuccess(String response) {
+                // status=success:orderId=a089f02724ed4a8db6c069f6d30b3245:txnId=None:paymentId=MOJO7918005A76494611:token=qyFwLidQ0aBNNWlsmwHx1gHFhlt6A1
                 String rearray[] = response.split(":");
-                String orderid = rearray[1].substring(rearray[1].indexOf("-") + 1);
-                Toast.makeText(getApplicationContext(), orderid, Toast.LENGTH_SHORT).show();
+                String orderid = rearray[1].substring(rearray[1].indexOf("=") + 1);
+                //Toast.makeText(getApplicationContext(), orderid, Toast.LENGTH_LONG).show();
+
+
+                String paymentId = rearray[3].substring(rearray[3].indexOf("=") + 1);
+                String token = rearray[4].substring(rearray[4].indexOf("=") + 1);
+
+
+                Log.d("BKC", "Orderid " + orderid + "\npaymentid " + paymentId + "\ntoken " + token);
+                Log.d("BKC", response);
+
+                Toast.makeText(ConfirmBookingFinal.this, "Orderid " + orderid + "\npaymentid " + paymentId + "\ntoken " + token, Toast.LENGTH_SHORT).show();
+
+
                 fabProgressCircle.beginFinalAnimation();
                 fabProgressCircle.onCompleteFABAnimationEnd();
                 Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG)

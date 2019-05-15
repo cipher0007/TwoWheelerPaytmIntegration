@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+   >
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="asda"-->
+    <!--android:textSize="20sp"-->
+    <!--android:layout_margin="10dp"-->
+    <!--android:id="@+id/bno"/>-->
+
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="asda"-->
+    <!--android:textSize="20sp"-->
+    <!--android:layout_margin="10dp"-->
+    <!--android:id="@+id/pno"/>-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="asda"-->
+    <!--android:textSize="20sp"-->
+    <!--android:layout_margin="10dp"-->
+    <!--android:id="@+id/bikeno"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="asda"-->
+    <!--android:textSize="20sp"-->
+    <!--android:layout_margin="10dp"-->
+    <!--android:id="@+id/noh"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="asda"-->
+    <!--android:textSize="20sp"-->
+    <!--android:layout_margin="10dp"-->
+    <!--android:id="@+id/dobook"/>-->
+
+
+    <com.mreram.ticketview.TicketView
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+
+
+        app:tv_anchor1="@+id/cl_head"
+        app:tv_anchor2="@+id/cl_center"
+        app:tv_circleRadius="9dp"
+        app:tv_circleSpace="15dp"
+        app:tv_dashColor="@color/text_color"
+        app:tv_dashSize="1.5dp">
+
+        <RelativeLayout
+            android:id="@+id/cl_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:background="@color/white"
+
+            >
+
+            <TextView
+                android:id="@+id/txt_scooter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+
+                android:paddingTop="15dp"
+                android:text="Scooter Number"
+                android:textAllCaps="true"
+                android:textSize="8sp" />
+
+            <TextView
+                android:id="@+id/bikeno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_scooter"
+                android:layout_marginLeft="10dp"
+
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.2"
+                android:paddingBottom="5dp"
+
+                android:text="Uk07 bs 5432"
+                android:textAllCaps="true"
+                android:textColor="@color/text"
+                android:textSize="18sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/cl_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cl_head"
+            android:background="#fff">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Duration"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/noh"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2H"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_color"
+                        android:textSize="10sp" />
+
+                        <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="200"
+                            android:id="@+id/dobook"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text"
+                        android:textSize="16sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="@drawable/divider_container"
+                    android:layerType="software"
+
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="3dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Order Id"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_color"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/bno"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="#6789gbn6789fg"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </com.mreram.ticketview.TicketView>
+</RelativeLayout>

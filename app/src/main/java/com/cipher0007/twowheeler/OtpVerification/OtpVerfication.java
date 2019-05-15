@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cipher0007.twowheeler.CurrentTrip;
 import com.cipher0007.twowheeler.MapActivity;
 import com.cipher0007.twowheeler.R;
 import com.github.jorgecastilloprz.FABProgressCircle;
@@ -73,7 +74,7 @@ public class OtpVerfication extends AppCompatActivity {
                     String number = etphoneNumber.getText().toString().trim();
                     String result = number.replaceAll("[-+.^:,]", "");
                     phoneNumber = "+" + code + result;
-                   sendDataForVerification(phoneNumber);
+                    sendDataForVerification(phoneNumber);
 
                 }
             }
@@ -162,7 +163,13 @@ public class OtpVerfication extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
-
+// else {
+//            Intent i = new Intent(OtpVerfication.this, CurrentTrip.class);
+//            startActivity(i);
+//            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//            // close this activity
+//            finish();
+//        }
 
     }
 }

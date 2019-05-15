@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:background="@drawable/gradientticket"
+    tools:context=".BookingCurrentTrip">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <com.mreram.ticketview.TicketView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            app:tv_anchor1="@+id/cl_head"
+            app:tv_anchor2="@+id/cl_center"
+            app:tv_circleRadius="9dp"
+            app:tv_circleSpace="15dp"
+            app:tv_dashColor="@color/text_color"
+            app:tv_dashSize="1.5dp">
+
+            <RelativeLayout
+                android:id="@+id/cl_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:id="@+id/txt_scooter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:paddingTop="15dp"
+                    android:text="Scooter Number"
+                    android:textAllCaps="true"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/txt_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_scooter"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginRight="50dp"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.2"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="Uk07 bs 5432"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text"
+                    android:textSize="22sp" />
+
+
+                <!--<TextView-->
+                <!--android:id="@+id/txt_price"-->
+
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="50dp"-->
+                <!--android:gravity="center"-->
+                <!--android:lineSpacingMultiplier="1.2"-->
+                <!--android:paddingBottom="10dp"-->
+                <!--android:paddingTop="20dp"-->
+                <!--android:text="@string/price"-->
+
+                <!--android:textColor="@color/text_color"-->
+                <!--android:textSize="12sp"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintHorizontal_chainStyle="spread"-->
+                <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--app:layout_constraintRight_toLeftOf="@id/txt_code"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--android:layout_marginLeft="50dp" />-->
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/cl_center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cl_head"
+                android:background="#fff">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imgbike"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/qrcode" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Vehicle"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_color"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Activa 4g"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="@drawable/divider_container"
+                        android:layerType="software"
+
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Duration"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_color"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2H"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Price"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_color"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="200"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="@drawable/divider_container"
+                        android:layerType="software"
+
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Order Id"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_color"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="#6789gbn6789fg"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!--<View-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="5dp"-->
+                    <!--android:background="@drawable/divider_container"-->
+                    <!--android:layerType="software"-->
+
+                    <!--/>-->
+                </LinearLayout>
+
+
+                <!--<View-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="5dp"-->
+                <!--android:background="@drawable/divider_container"-->
+                <!--android:layerType="software"-->
+                <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--app:layout_constraintRight_toRightOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/txt_name" />-->
+
+                <!--<ImageView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="200dp"-->
+                <!--android:src="@drawable/idccard"-->
+                <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--app:layout_constraintRight_toRightOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/txt_name" />-->
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/txtBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cl_center"
+                android:gravity="center"
+
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/call"
+
+                    android:orientation="vertical"
+                    android:paddingTop="3dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_call_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginTop="3dp"
+                        android:text="Call Us"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/direction"
+                    android:orientation="vertical"
+                    android:paddingTop="3dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_directions_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginTop="3dp"
+                        android:text="Get Direction"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/txtBottom"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:background="@color/white"-->
+            <!--android:paddingBottom="10dp"-->
+            <!---->
+            <!--&gt;-->
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="sdfasdfasdfafdasdf"/>-->
+            <!--</RelativeLayout>-->
+
+
+        </com.mreram.ticketview.TicketView>
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

@@ -138,7 +138,7 @@ public class Timer_Service extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mEditor.putBoolean("finish", false).commit();
+        mEditor.putBoolean("finish", true).commit();
         Log.e("Service finish","Finish");
     }
 

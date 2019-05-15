@@ -19,201 +19,227 @@
         android:gravity="center"
         android:layout_marginBottom="25dp"
         android:text="Book A Ride"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#3E2723"
         android:textSize="25sp" />
-
-    <HorizontalScrollView
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        >
 
-        android:scrollbars="none"
-       >
-
+        <!-- Adding 3 rows of placeholders -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-
-            android:orientation="horizontal"
-           >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:id="@+id/btn2hRide"
-
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                   >
-
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/hour" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="2H"
-                        android:textColor="#444"
-                        android:textSize="30sp" />
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="₹50-₹70"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:id="@+id/btn4hRide"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                   >
-
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/hour" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="4H"
-                        android:textColor="#444"
-                        android:textSize="30sp" />
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="₹120-₹180"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:id="@+id/btn6hRide"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                  >
-
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/hour" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="6H"
-                        android:textColor="#444"
-                        android:textSize="30sp" />
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="₹220-₹250"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:id="@+id/btnFullDayRide"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/hour" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="Full Day"
-                        android:textColor="#444"
-                        android:textSize="16sp" />
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="₹450"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
+            <include layout="@layout/rate_plcaeholder" />
+            <include layout="@layout/rate_plcaeholder" />
+            <include layout="@layout/rate_plcaeholder" />
+            <include layout="@layout/rate_plcaeholder" />
 
         </LinearLayout>
-    </HorizontalScrollView>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/rateRecyclerView"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+    <!--<HorizontalScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:fillViewport="true"-->
+
+        <!--android:scrollbars="none"-->
+       <!--&gt;-->
+
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+
+
+            <!--android:orientation="horizontal"-->
+           <!--&gt;-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:id="@+id/btn2hRide"-->
+
+                <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+                <!--android:clickable="true"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                   <!--&gt;-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="80dp"-->
+                        <!--android:layout_height="80dp"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:src="@drawable/hour" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="2H"-->
+                        <!--android:textColor="#444"-->
+                        <!--android:textSize="30sp" />-->
+                <!--</RelativeLayout>-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:text="₹50-₹70"-->
+                    <!--android:textSize="15dp"-->
+                    <!--android:textStyle="bold" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:id="@+id/btn4hRide"-->
+                <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+                <!--android:clickable="true"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                   <!--&gt;-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="80dp"-->
+                        <!--android:layout_height="80dp"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:src="@drawable/hour" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="4H"-->
+                        <!--android:textColor="#444"-->
+                        <!--android:textSize="30sp" />-->
+                <!--</RelativeLayout>-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:text="₹120-₹180"-->
+                    <!--android:textSize="15dp"-->
+                    <!--android:textStyle="bold" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:id="@+id/btn6hRide"-->
+                <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+                <!--android:clickable="true"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                  <!--&gt;-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="80dp"-->
+                        <!--android:layout_height="80dp"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:src="@drawable/hour" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="6H"-->
+                        <!--android:textColor="#444"-->
+                        <!--android:textSize="30sp" />-->
+                <!--</RelativeLayout>-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:text="₹220-₹250"-->
+                    <!--android:textSize="15dp"-->
+                    <!--android:textStyle="bold" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginRight="20dp"-->
+                <!--android:id="@+id/btnFullDayRide"-->
+                <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+                <!--android:clickable="true"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_weight="1">-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="80dp"-->
+                        <!--android:layout_height="80dp"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:src="@drawable/hour" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="Full Day"-->
+                        <!--android:textColor="#444"-->
+                        <!--android:textSize="16sp" />-->
+                <!--</RelativeLayout>-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:text="₹450"-->
+                    <!--android:textSize="15dp"-->
+                    <!--android:textStyle="bold" />-->
+            <!--</LinearLayout>-->
+
+
+        <!--</LinearLayout>-->
+    <!--</HorizontalScrollView>-->
 
     <TextView
         android:layout_marginTop="25dp"

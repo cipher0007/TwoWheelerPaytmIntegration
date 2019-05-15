@@ -38,10 +38,10 @@
                 android:id="@+id/nav_help"
                 android:icon="@drawable/ic_help_black_24dp"
                 android:title="Help" />
-            <item
+          <!--  <item
                 android:id="@+id/nav_rate_us"
                 android:icon="@drawable/ic_rate_review_black_24dp"
-                android:title="Rate Us" />
+                android:title="Rate Us" />-->
         </menu>
     </item>
 

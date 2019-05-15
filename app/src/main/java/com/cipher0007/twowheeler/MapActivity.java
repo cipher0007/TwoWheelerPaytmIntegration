@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
@@ -17,9 +19,14 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,7 +35,14 @@ import android.widget.Toast;
 
 import com.cipher0007.twowheeler.Helpers.FetchURL;
 import com.cipher0007.twowheeler.Helpers.TaskLoadedCallback;
+import com.cipher0007.twowheeler.Network.Adapter.BikeNoAdapter;
+import com.cipher0007.twowheeler.Network.Adapter.RateAdapter;
+import com.cipher0007.twowheeler.Network.ApiClient;
+import com.cipher0007.twowheeler.Network.ApiServices;
+import com.cipher0007.twowheeler.Network.Models.Rate;
 import com.cipher0007.twowheeler.OtpVerification.SharedPrefManager;
+import com.codemybrainsout.ratingdialog.RatingDialog;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,6 +57,12 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, NavigationView.OnNavigationItemSelectedListener {
     LatLng clementtown, Mylocation;
     private Polyline currentPolyline;
@@ -55,12 +75,48 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private LinearLayout btn2h, btn4h, btn6h, btnfull;
     private TextView txtHeaderName, txtHeaderNo;
     private FrameLayout navicon;
+    private RecyclerView rateRecyclerView;
+    private ShimmerFrameLayout mShimmerViewContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         TextView txtbook = findViewById(R.id.txtbookride);
+
+
+//        final RatingDialog ratingDialog = new RatingDialog.Builder(this)
+//
+//                .onRatingBarFormSumbit(new RatingDialog.Builder.RatingDialogFormListener() {
+//                    @Override
+//                    public void onFormSubmitted(String feedback) {
+//
+//                    }
+//                }).build();
+//
+//        ratingDialog.show();
+//        Intent i=new Intent(getApplicationContext(),BookingCurrentTrip.class);
+//        startActivity(i);
+//        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.parseColor("#20111111"));
+        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            Window w = getWindow();
+//            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                w.setStatusBarColor(Color.parseColor("#20111111"));
+//            }
+//        }
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmer();
+        mShimmerViewContainer.setVisibility(View.VISIBLE);
+
+
+//        test();
+
+
         // TextView txtprice = findViewById(R.id.txtprice);
         Typeface bold = Typeface.createFromAsset(getAssets(),
                 "Montserrat-Regular.otf");
@@ -79,6 +135,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         sheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
+        rateRecyclerView = findViewById(R.id.rateRecyclerView);
+        rateRecyclerView.setHasFixedSize(true);
+        // LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
+        rateRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        //rateRecyclerView.setLayoutManager(manager);
+        NetworkCall();
 
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
 //                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -88,6 +150,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
+
         //TextView navUsername = (TextView) headerView.findViewById(R.id.navUsername);
         //navUsername.setText("Your Text Here");
         SharedPrefManager sharedPrefManager = new SharedPrefManager(MapActivity.this);
@@ -155,7 +218,57 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
 
         //   MarkerPoints = new ArrayList<>();
-        initButton();
+        //initButton();
+
+
+        int size = navigationView.getMenu().size();
+        for (int i = 0; i < size; i++) {
+            navigationView.getMenu().getItem(i).setCheckable(false);
+        }
+    }
+
+//    private void test() {
+//        String response="status=success:orderId=a089f02724ed4a8db6c069f6d30b3245:txnId=None:paymentId=MOJO7918005A76494611:token=qyFwLidQ0aBNNWlsmwHx1gHFhlt6A1";
+//
+//        String rearray[] = response.split(":");
+//        String orderid = rearray[1].substring(rearray[1].indexOf("=") + 1);
+//        //Toast.makeText(getApplicationContext(), orderid, Toast.LENGTH_LONG).show();
+//
+//
+//        String paymentId =rearray[3].substring(rearray[3].indexOf("=")+1);
+//        String token =rearray[4].substring(rearray[4].indexOf("=")+1);
+//
+//
+//        Log.d("BKC","Orderid "+orderid+"\npaymentid "+paymentId+"\ntoken "+token);
+//        Log.d("BKC",response);
+//
+//        Toast.makeText(getApplicationContext(), "Orderid "+orderid+"\npaymentid "+paymentId+"\ntoken "+token, Toast.LENGTH_SHORT).show();
+//
+//    }
+
+    private void NetworkCall() {
+
+        ApiServices apiService = ApiClient.getClient(getApplicationContext()).create(ApiServices.class);
+
+        Call<List<Rate>> call = apiService.BikeRates(new SharedPrefManager(getApplicationContext()).getPhoneNumber());
+        call.enqueue(new Callback<List<Rate>>() {
+            @Override
+            public void onResponse(Call<List<Rate>> call, Response<List<Rate>> response) {
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
+                List<Rate> rates = response.body();
+                Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_LONG).show();
+                rateRecyclerView.setAdapter(new RateAdapter(getApplicationContext(), rates));
+            }
+
+            @Override
+            public void onFailure(Call<List<Rate>> call, Throwable t) {
+                Toast.makeText(MapActivity.this, "No timing are available!", Toast.LENGTH_SHORT).show();
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     @Override
@@ -171,56 +284,62 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mapFragment.getMapAsync(this);
     }
 
-    private void initButton() {
-SharedPrefManager save=new SharedPrefManager(getApplicationContext());
-        btn2h = findViewById(R.id.btn2hRide);
-        btn4h = findViewById(R.id.btn4hRide);
-        btn6h = findViewById(R.id.btn6hRide);
-        btnfull = findViewById(R.id.btnFullDayRide);
-
-        btn2h.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save.Ridetime("2");
-                Intent intent = new Intent(MapActivity.this, CurrentTrip.class);
-             //   intent.putExtra("price", "90");
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            }
-        });
-
-        btn4h.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save.Ridetime("4");
-                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
-                intent.putExtra("price", "180");
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            }
-        });
-
-        btn6h.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save.Ridetime("6");
-                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
-                intent.putExtra("price", "250");
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            }
-        });
-        btnfull.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                save.Ridetime("0");
-                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
-                intent.putExtra("price", "450");
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            }
-        });
-    }
+//    private void initButton() {
+//        SharedPrefManager save = new SharedPrefManager(getApplicationContext());
+//        btn2h = findViewById(R.id.btn2hRide);
+//        btn4h = findViewById(R.id.btn4hRide);
+//        btn6h = findViewById(R.id.btn6hRide);
+//        btnfull = findViewById(R.id.btnFullDayRide);
+//
+//        btn2h.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                save.Ridetime("2");
+//                Intent intent = new Intent(MapActivity.this, BikeNo.class);
+//                //   intent.putExtra("price", "90");
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//
+////                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
+////                intent.putExtra("price", "180");
+////                startActivity(intent);
+////                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//            }
+//
+//        });
+//
+//        btn4h.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                save.Ridetime("4");
+//                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
+//                intent.putExtra("price", "180");
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//            }
+//        });
+//
+//        btn6h.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                save.Ridetime("6");
+//                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
+//                intent.putExtra("price", "250");
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//            }
+//        });
+//        btnfull.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                save.Ridetime("0");
+//                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
+//                intent.putExtra("price", "450");
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//            }
+//        });
+//    }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
         // Origin of route
@@ -336,12 +455,33 @@ SharedPrefManager save=new SharedPrefManager(getApplicationContext());
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_your_trips) {
+            Intent intent = new Intent(getApplicationContext(), YourBooking.class);
+
+            startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        } else if (id == R.id.nav_share) {
+
+            Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            String shareBodyText = "Install Easy Scooter From play store and GET FIRST FREE RIDE, Book you vehicle and ride on mountains!" +
+                    "http://easyscooter.co.in";
+            intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject/Title");
+            intent.putExtra(android.content.Intent.EXTRA_TEXT, shareBodyText);
+            startActivity(Intent.createChooser(intent, "Choose sharing method"));
+        }
+//        } else if (id == R.id.nav_rate_us) {
+//            final RatingDialog ratingDialog = new RatingDialog.Builder(getApplicationContext())
 //
-//        } else if (id == R.id.nav_slideshow) {
+//                .onRatingBarFormSumbit(new RatingDialog.Builder.RatingDialogFormListener() {
+//                    @Override
+//                    public void onFormSubmitted(String feedback) {
 //
+//                    }
+//                }).build();
+//
+//        ratingDialog.show();
+//        }
 //        } else if (id == R.id.nav_manage) {
 //
 //        } else if (id == R.id.nav_share) {
@@ -354,4 +494,5 @@ SharedPrefManager save=new SharedPrefManager(getApplicationContext());
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

@@ -2,7 +2,12 @@ package com.cipher0007.twowheeler.Network;
 
 import android.graphics.Bitmap;
 
+import com.cipher0007.twowheeler.Network.Models.BikeNo;
+import com.cipher0007.twowheeler.Network.Models.Rate;
 import com.cipher0007.twowheeler.Network.Models.Register;
+import com.cipher0007.twowheeler.Network.Models.YourBookingItem;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -19,4 +24,17 @@ public interface ApiServices {
                                  @Field("number") String number,
                                  @Field("fileToUpload") String fileToUpload, @Field("fileToUpload1") String  fileToUpload1
     );
+
+    @FormUrlEncoded
+    @POST("android/showbikeswithstatus.php")
+    Call<List<BikeNo>> bikeno(@Field("number") String number);
+
+    @FormUrlEncoded
+    @POST("android/rates.php")
+    Call<List<Rate>> BikeRates(@Field("number") String number);
+
+    @FormUrlEncoded
+    @POST("android/bookinghistory.php")
+    Call<List<YourBookingItem>> Bookings(@Field("number") String number);
+
 }

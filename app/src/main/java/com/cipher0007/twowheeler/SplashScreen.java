@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,13 +30,7 @@ public class SplashScreen extends AppCompatActivity {
         Typeface bold = Typeface.createFromAsset(getAssets(),
                 "Montserrat-Light.otf");
         txtview.setTypeface(bold);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            ActivityCompat.requestPermissions(SplashScreen.this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    1);
-            return;
-        }
+
         new Handler().postDelayed(new Runnable() {
 
 
@@ -46,28 +41,39 @@ public class SplashScreen extends AppCompatActivity {
 
 
                SharedPreferences mpref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                if (!mpref.getBoolean("finish", false)) {
+//                if (mpref.getBoolean("finish", false)) {
                     Intent i = new Intent(SplashScreen.this, OtpVerfication.class);
                     startActivity(i);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    overridePendingTransition(R.anim.fade_in, R.anim.swipe_up);
                     // close this activity
                     finish();
-                }else{
+//                }else{
 //                    Intent i = new Intent(SplashScreen.this, CurrentTrip.class);
 //                    startActivity(i);
 //                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 //                    // close this activity
 //                    finish();
-                    Intent i = new Intent(SplashScreen.this, UserDetail.class);
-                    startActivity(i);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    // close this activity
-                    finish();
-                }
+////                    Intent i = new Intent(SplashScreen.this, UserDetail.class);
+////                    startActivity(i);
+////                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+////                    // close this activity
+////                    finish();
+//                }
             }
         }, SPLASH_TIME_OUT);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            ActivityCompat.requestPermissions(SplashScreen.this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+            return;
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

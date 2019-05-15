@@ -18,7 +18,22 @@ public class SharedPrefManager {
         editor.putString("time", time);
         editor.commit();
     }
+public void setSelectedRide(String hour,String price){
+    SharedPreferences sharedPreferences = context.getSharedPreferences("RideSelected", Context.MODE_PRIVATE);
+    SharedPreferences.Editor editor = sharedPreferences.edit();
+    editor.putString("hour", hour);
+    editor.putString("price", price);
+    editor.commit();
 
+}
+    public String getSelectedhour() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("RideSelected", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("hour", "");
+    }
+    public String getSelectedPrice() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("RideSelected", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("price", "");
+    }
     public String getRideTime() {
         SharedPreferences sharedPreferences = context.getSharedPreferences("RideTime", Context.MODE_PRIVATE);
         return sharedPreferences.getString("time", "");

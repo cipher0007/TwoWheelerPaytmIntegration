@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    tools:showIn="@layout/activity_bike_no"
+    tools:context=".BikeNo">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose your Favourite Vehicle!"
+        android:textSize="20sp"
+        android:id="@+id/t1"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="4dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/t1"
+        android:layout_height="wrap_content"
+        android:text="“What you choose also\nchooses you.”"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginBottom="20dp"/>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container1"
+        android:layout_width="match_parent"
+        android:layout_marginTop="110dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        >
+
+        <!-- Adding 3 rows of placeholders -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/bike_no_placeholder" />
+            <include layout="@layout/bike_no_placeholder" />
+            <include layout="@layout/bike_no_placeholder" />
+            <include layout="@layout/bike_no_placeholder" />
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="110dp"
+        android:id="@+id/BikeRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutAnimation="@anim/layout_animation_fall_up">
+
+    </android.support.v7.widget.RecyclerView>
+</RelativeLayout>
