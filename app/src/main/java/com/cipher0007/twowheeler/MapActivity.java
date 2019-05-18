@@ -2,14 +2,18 @@ package com.cipher0007.twowheeler;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
@@ -21,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -30,6 +35,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -40,9 +46,13 @@ import com.cipher0007.twowheeler.Helpers.FetchURL;
 import com.cipher0007.twowheeler.Helpers.TaskLoadedCallback;
 import com.cipher0007.twowheeler.Network.Adapter.BikeNoAdapter;
 import com.cipher0007.twowheeler.Network.Adapter.RateAdapter;
+import com.cipher0007.twowheeler.Network.Adapter.YourBookingAdapter;
 import com.cipher0007.twowheeler.Network.ApiClient;
 import com.cipher0007.twowheeler.Network.ApiServices;
+import com.cipher0007.twowheeler.Network.Models.GetProfilePhotoItem;
+import com.cipher0007.twowheeler.Network.Models.ProfilePhotoItem;
 import com.cipher0007.twowheeler.Network.Models.Rate;
+import com.cipher0007.twowheeler.Network.Models.YourBookingItem;
 import com.cipher0007.twowheeler.OtpVerification.SharedPrefManager;
 import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -59,7 +69,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +82,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, NavigationView.OnNavigationItemSelectedListener ,AdapterView.OnItemSelectedListener{
-    LatLng clementtown, Mylocation;
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
+    LatLng clementtown, Mylocation, placespineer;
     private Polyline currentPolyline;
     private MarkerOptions place1, place2;
     private GoogleMap mMap;
@@ -78,18 +93,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     // ArrayList<LatLng> MarkerPoints;
     private LinearLayout btn2h, btn4h, btn6h, btnfull;
     private TextView txtHeaderName, txtHeaderNo;
+    private ImageView headerProfileImage;
     private FrameLayout navicon;
+    private FrameLayout headerImageButton;
     private RecyclerView rateRecyclerView;
     private ShimmerFrameLayout mShimmerViewContainer;
-
+    private Bitmap profileBitmap;
+    private Uri mCropImageUri;
+//private ImageView mRightArrow;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         TextView txtbook = findViewById(R.id.txtbookride);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner(spinner);
+        // mRightArrow = findViewById(R.id.bottom_sheet_right_arrow);
 
 //        final RatingDialog ratingDialog = new RatingDialog.Builder(this)
 //
@@ -117,11 +137,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmer();
         mShimmerViewContainer.setVisibility(View.VISIBLE);
-
-
 //        test();
-
-
         // TextView txtprice = findViewById(R.id.txtprice);
         Typeface bold = Typeface.createFromAsset(getAssets(),
                 "Montserrat-Regular.otf");
@@ -152,6 +168,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 //        drawer.addDrawerListener(toggle);
         // toggle.syncState();
 
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
@@ -159,8 +176,54 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //TextView navUsername = (TextView) headerView.findViewById(R.id.navUsername);
         //navUsername.setText("Your Text Here");
         SharedPrefManager sharedPrefManager = new SharedPrefManager(MapActivity.this);
+
         txtHeaderName = headerView.findViewById(R.id.txtHeaderName);
         txtHeaderNo = headerView.findViewById(R.id.txtHeaderNo);
+        headerProfileImage = headerView.findViewById(R.id.profilepic);
+
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getProfileImage();
+                    }
+                });
+            }
+        };
+        thread.start();
+
+
+        headerImageButton = headerView.findViewById(R.id.ProfileButtonHeader);
+        headerImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    CropImage.startPickImageActivity(MapActivity.this);
+
+                                } catch (Exception e) {
+                                }
+                            }
+                        });
+                    }
+                };
+                thread.start();
+
+
+            }
+        });
         txtHeaderName.setText(sharedPrefManager.getFirstName() + " " + sharedPrefManager.getLastName());
         txtHeaderNo.setText(sharedPrefManager.getPhoneNumber());
 
@@ -195,26 +258,32 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         // btnBottomSheet.setText("Close Sheet");
                     }
                     break;
+
                     case BottomSheetBehavior.STATE_COLLAPSED: {
                         // btnBottomSheet.setText("Expand Sheet");
                     }
                     break;
+
                     case BottomSheetBehavior.STATE_DRAGGING:
                         break;
                     case BottomSheetBehavior.STATE_SETTLING:
                         break;
+
                 }
+
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
+//                if (isAdded()) {
+//                    animateBottomSheetArrows(slideOffset);
+//                }
             }
         });
 
 
-        place1 = new MarkerOptions().position(new LatLng(30.2653, 78.0110)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 100, 100)));
-        place2 = new MarkerOptions().position(new LatLng(30.355977, 78.085342)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 100, 100)));
+        place1 = new MarkerOptions().position(new LatLng(30.2653, 78.0110)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
+        place2 = new MarkerOptions().position(new LatLng(30.355977, 78.085342)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -230,6 +299,56 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         for (int i = 0; i < size; i++) {
             navigationView.getMenu().getItem(i).setCheckable(false);
         }
+    }
+
+    private void setProfilePhoto(String photo) {
+
+        ApiServices apiService = ApiClient.getClient(getApplicationContext()).create(ApiServices.class);
+
+        Call<ProfilePhotoItem> call = apiService.UploadProfilePhoto(new SharedPrefManager(getApplicationContext()).getPhoneNumber(), photo);
+        call.enqueue(new Callback<ProfilePhotoItem>() {
+            @Override
+            public void onResponse(Call<ProfilePhotoItem> call, Response<ProfilePhotoItem> response) {
+                ProfilePhotoItem book = response.body();
+
+                Toast.makeText(getApplicationContext(), book.getError(), Toast.LENGTH_LONG).show();
+                if (book.getError().equalsIgnoreCase("false")) {
+                    getProfileImage();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ProfilePhotoItem> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    private void getProfileImage() {
+        String Photo = null;
+        ApiServices apiService = ApiClient.getClient(getApplicationContext()).create(ApiServices.class);
+
+        Call<GetProfilePhotoItem> call = apiService.GetProfilePhoto(new SharedPrefManager(getApplicationContext()).getPhoneNumber());
+        call.enqueue(new Callback<GetProfilePhotoItem>() {
+            @Override
+            public void onResponse(Call<GetProfilePhotoItem> call, Response<GetProfilePhotoItem> response) {
+                GetProfilePhotoItem book = response.body();
+
+                Toast.makeText(getApplicationContext(), book.getProfimage().toString(), Toast.LENGTH_LONG).show();
+                Picasso.get().load(book.getProfimage()).into(headerProfileImage);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<GetProfilePhotoItem> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+
     }
 
     private void spinner(Spinner spinner) {
@@ -249,19 +368,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categories);
 
         // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
 
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
 
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent= new Intent(MainActivity.this,SecondActivity.class);
-//                intent.putExtra("data",String.valueOf(spinner.getSelectedItem()));
-//                startActivity(intent);
-//            }
-//        });
     }
 
 //    private void test() {
@@ -308,12 +419,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     }
 
+    private void animateBottomSheetArrows(float slideOffset) {
+        // Animate counter-clockwise
+        // mLeftArrow.setRotation(slideOffset * -180);
+        // Animate clockwise
+        //mRightArrow.setRotation(slideOffset * 180);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        place1 = new MarkerOptions().position(new LatLng(30.2653, 78.0110)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 100, 100)));
-        place2 = new MarkerOptions().position(new LatLng(30.355977, 78.085342)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 100, 100)));
-
+        place1 = new MarkerOptions().position(new LatLng(30.2653, 78.0110)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
+        place2 = new MarkerOptions().position(new LatLng(30.355977, 78.085342)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
+        placespineer = new LatLng(30.2653, 78.0110);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -361,7 +479,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 //            public void onClick(View view) {
 //                save.Ridetime("6");
 //                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
-//                intent.putExtra("price", "250");
+//                intent.putExtra("price", "280");
 //                startActivity(intent);
 //                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 //            }
@@ -371,7 +489,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 //            public void onClick(View view) {
 //                save.Ridetime("0");
 //                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
-//                intent.putExtra("price", "450");
+//                intent.putExtra("price", "480");
 //                startActivity(intent);
 //                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 //            }
@@ -401,6 +519,71 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 
+    private String convertToString(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, byteArrayOutputStream);
+        byte[] imgByte = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imgByte, Base64.DEFAULT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // handle result of pick image chooser
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            } else {
+                // no permissions required or already grunted, can start crop image activity
+                startCropImageActivity(imageUri);
+            }
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                //headerImageButton.getCroppedImageAsync();
+                // headerProfileImage.setImageUriAsync(result.getUri());
+                //headerProfileImage.getCroppedImage();
+                try {
+                    profileBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
+                    setProfilePhoto(convertToString(profileBitmap));
+
+                    // headerProfileImage.setImageBitmap(profileBitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//            if (resultCode == RESULT_OK) {
+//                Uri resultUri = result.getUri();
+//                headerProfileImage.setImageUriAsync(resultUri);
+//                headerProfileImage.getCroppedImageAsync();
+//                try {
+//
+//                    profileBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                Exception error = result.getError();
+//            }
+//        }
+        }
+    }
+
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .start(this);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -426,6 +609,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             // other 'case' lines to check for other
             // permissions this app might request
         }
+        if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // required permissions granted, start crop image activity
+            startCropImageActivity(mCropImageUri);
+        } else {
+            Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+        }
     }
 
     public Bitmap resizeMapIcons(String iconName, int width, int height) {
@@ -433,6 +622,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
         return resizedBitmap;
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -452,7 +642,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         // Got last known location. In some rare situations this can be null.
                         Mylocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                        mMap.addMarker(new MarkerOptions().position(Mylocation).title("It's Me").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("pin", 100, 100))));
+                        mMap.addMarker(new MarkerOptions().position(Mylocation).title("It's Me").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("pin", 80, 80))));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(Mylocation));
                         mMap.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
                         if (location != null) {
@@ -464,6 +654,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                //Open google maps
                 new FetchURL(MapActivity.this).execute(getUrl(marker.getPosition(), Mylocation, "driving"), "driving");
                 return false;
             }
@@ -476,10 +667,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 //        Geocoder geocoder=new Geocoder(getApplicationContext());
 ////        List<Address>list=geocoder.getFromLocationName(clementtown,1);
-//        mMap.addMarker(new MarkerOptions().position(clementtown).title("Two Wheeler").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("helmet", 100, 100))));
+//        mMap.addMarker(new MarkerOptions().position(clementtown).title("Two Wheeler").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("helmet", 80, 80))));
 //
-//        mMap.addMarker(new MarkerOptions().position(cmttown1).title("Two Wheeler").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("helmet", 100, 100))));
-//        mMap.addMarker(new MarkerOptions().position(itpark).title("Two Wheeler").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("helmet", 100, 100))));
+//        mMap.addMarker(new MarkerOptions().position(cmttown1).title("Two Wheeler").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("helmet", 80, 80))));
+//        mMap.addMarker(new MarkerOptions().position(itpark).title("Two Wheeler").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("helmet", 80, 80))));
 
         mMap.addMarker(place1);
         mMap.addMarker(place2);
@@ -535,6 +726,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
         String item = parent.getItemAtPosition(position).toString();
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(placespineer));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
+        mMap.getUiSettings().setMapToolbarEnabled(true);
+        // sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         // Showing selected spinner item
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();

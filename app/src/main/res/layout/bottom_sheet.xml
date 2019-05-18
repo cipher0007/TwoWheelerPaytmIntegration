@@ -10,17 +10,36 @@
     app:behavior_hideable="false"
     app:behavior_peekHeight="60dp"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+<!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:gravity="center"-->
 
+    <!--android:layout_marginBottom="25dp"-->
+    <!--android:orientation="horizontal">-->
     <TextView
         android:id="@+id/txtbookride"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_marginBottom="25dp"
+        android:layout_centerHorizontal="true"
         android:text="Book A Ride"
         android:textColor="#3E2723"
         android:textSize="25sp" />
+    <!--<ImageView-->
+        <!--android:id="@+id/bottom_sheet_right_arrow"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+<!--android:layout_alignParentRight="true"-->
+        <!--android:src="@drawable/arrow_up"-->
+
+
+        <!--/>-->
+   <!--</RelativeLayout>-->
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"

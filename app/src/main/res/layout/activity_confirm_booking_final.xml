@@ -46,7 +46,6 @@
             <!--android:src="@drawable/ic_motorcycle"-->
             <!--/>-->
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animation_view"
             android:layout_width="180dp"
             android:layout_height="180dp"
             android:layout_gravity="center"

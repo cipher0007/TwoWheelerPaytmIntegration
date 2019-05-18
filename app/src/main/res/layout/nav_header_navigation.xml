@@ -8,47 +8,52 @@
     android:orientation="vertical"
 
 
-
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-<ImageView
+<FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/nac_image"
-    android:scaleType="centerCrop"
-    android:foreground="@drawable/nav_graf"
-    android:layout_centerInParent="true"
-    android:src="@drawable/header"/>
+    android:clickable="true"
+    android:layout_height="match_parent"
+    android:id="@+id/ProfileButtonHeader"></FrameLayout>
+    <ImageView
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profilepic"
+
+        android:foreground="@drawable/nav_graf"
+       android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <!--<ImageView-->
-        <!--android:id="@+id/imageView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:contentDescription="@string/nav_header_desc"-->
-        <!--android:paddingTop="@dimen/nav_header_vertical_spacing"-->
-        <!--app:srcCompat="@mipmap/ic_launcher_round" />-->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:layout_alignParentBottom="true"
-    android:orientation="vertical">
-    <TextView
+    <!--android:id="@+id/imageView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:contentDescription="@string/nav_header_desc"-->
+    <!--android:paddingTop="@dimen/nav_header_vertical_spacing"-->
+    <!--app:srcCompat="@mipmap/ic_launcher_round" />-->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-android:text="Yash Verma"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-      android:id="@+id/txtHeaderName"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtHeaderNo"
-        android:text="1234567890"
-        android:textSize="14sp"
-        android:textColor="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/txtHeaderName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:text="Yash Verma"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtHeaderNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1234567890"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
 </RelativeLayout>

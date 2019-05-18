@@ -3,6 +3,8 @@ package com.cipher0007.twowheeler.Network;
 import android.graphics.Bitmap;
 
 import com.cipher0007.twowheeler.Network.Models.BikeNo;
+import com.cipher0007.twowheeler.Network.Models.GetProfilePhotoItem;
+import com.cipher0007.twowheeler.Network.Models.ProfilePhotoItem;
 import com.cipher0007.twowheeler.Network.Models.Rate;
 import com.cipher0007.twowheeler.Network.Models.Register;
 import com.cipher0007.twowheeler.Network.Models.YourBookingItem;
@@ -36,5 +38,15 @@ public interface ApiServices {
     @FormUrlEncoded
     @POST("android/bookinghistory.php")
     Call<List<YourBookingItem>> Bookings(@Field("number") String number);
+
+    @FormUrlEncoded
+    @POST("android/profilepicupload.php")
+    Call<ProfilePhotoItem> UploadProfilePhoto(@Field("number") String number,
+                                                    @Field("fileToUpload") String fileToUpload);
+
+    @FormUrlEncoded
+    @POST("android/getprofpic.php")
+    Call<GetProfilePhotoItem> GetProfilePhoto(@Field("number") String number);
+
 
 }

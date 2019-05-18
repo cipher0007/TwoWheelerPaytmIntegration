@@ -9,15 +9,12 @@
             android:icon="@drawable/ic_merge_type_black_24dp"
             android:title="Your Trips" />
         <item
-            android:id="@+id/nav_free_rides"
             android:icon="@drawable/ic_directions_bike_black_24dp"
             android:title="Free Rides" />
         <item
-            android:id="@+id/nav_Document"
             android:icon="@drawable/ic_business_center_black_24dp"
             android:title="Your Documents" />
         <item
-            android:id="@+id/nav_term_policy"
             android:icon="@drawable/ic_security_black_24dp"
             android:title="Terms and policy" />
 
@@ -31,11 +28,9 @@
                 android:icon="@drawable/ic_share_black_24dp"
                 android:title="Share" />
             <item
-                android:id="@+id/nav_setting"
                 android:icon="@drawable/ic_settings_black_24dp"
                 android:title="Setting" />
             <item
-                android:id="@+id/nav_help"
                 android:icon="@drawable/ic_help_black_24dp"
                 android:title="Help" />
           <!--  <item
