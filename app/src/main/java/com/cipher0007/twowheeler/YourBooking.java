@@ -23,12 +23,14 @@ import retrofit2.Response;
 
 public class YourBooking extends AppCompatActivity {
 RecyclerView recyclerView;
+    ViewDialog viewDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_bk);
         recyclerView=findViewById(R.id.recyclerViewBookings);
+        viewDialog = new ViewDialog(YourBooking.this);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(manager);
@@ -47,6 +49,7 @@ RecyclerView recyclerView;
     }
 
     private void NetworkCall() {
+        viewDialog.showDialog();
         ApiServices apiService = ApiClient.getClient(getApplicationContext()).create(ApiServices.class);
 
         Call<List<YourBookingItem>> call = apiService.Bookings(new SharedPrefManager(getApplicationContext()).getPhoneNumber());
@@ -58,6 +61,7 @@ RecyclerView recyclerView;
                 List<YourBookingItem> book = response.body();
                 Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_LONG).show();
                recyclerView.setAdapter(new YourBookingAdapter(getApplicationContext(), book));
+               viewDialog.hideDialog();
             }
 
             @Override
@@ -66,7 +70,9 @@ RecyclerView recyclerView;
 //                Toast.makeText(MapActivity.this, "No timing are available!", Toast.LENGTH_SHORT).show();
 //                mShimmerViewContainer.stopShimmer();
 //                mShimmerViewContainer.setVisibility(View.GONE);
+                viewDialog.hideDialog();
             }
         });
+
     }
 }

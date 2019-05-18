@@ -100,6 +100,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private ShimmerFrameLayout mShimmerViewContainer;
     private Bitmap profileBitmap;
     private Uri mCropImageUri;
+    ViewDialog viewDialog;
 //private ImageView mRightArrow;
 
     @Override
@@ -109,6 +110,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         TextView txtbook = findViewById(R.id.txtbookride);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner(spinner);
+        viewDialog = new ViewDialog(MapActivity.this);
+
         // mRightArrow = findViewById(R.id.bottom_sheet_right_arrow);
 
 //        final RatingDialog ratingDialog = new RatingDialog.Builder(this)
@@ -190,6 +193,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        viewDialog.showDialog();
                         getProfileImage();
                     }
                 });
@@ -214,6 +218,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                     CropImage.startPickImageActivity(MapActivity.this);
 
                                 } catch (Exception e) {
+
                                 }
                             }
                         });
@@ -302,7 +307,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     private void setProfilePhoto(String photo) {
-
+        viewDialog.showDialog();
         ApiServices apiService = ApiClient.getClient(getApplicationContext()).create(ApiServices.class);
 
         Call<ProfilePhotoItem> call = apiService.UploadProfilePhoto(new SharedPrefManager(getApplicationContext()).getPhoneNumber(), photo);
@@ -314,19 +319,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 Toast.makeText(getApplicationContext(), book.getError(), Toast.LENGTH_LONG).show();
                 if (book.getError().equalsIgnoreCase("false")) {
                     getProfileImage();
+                    viewDialog.hideDialog();
                 }
+                    viewDialog.hideDialog();
 
             }
 
             @Override
             public void onFailure(Call<ProfilePhotoItem> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
+                viewDialog.hideDialog();
             }
         });
 
     }
 
     private void getProfileImage() {
+        //viewDialog.showDialog();
         String Photo = null;
         ApiServices apiService = ApiClient.getClient(getApplicationContext()).create(ApiServices.class);
 
@@ -336,8 +345,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             public void onResponse(Call<GetProfilePhotoItem> call, Response<GetProfilePhotoItem> response) {
                 GetProfilePhotoItem book = response.body();
 
+
                 Toast.makeText(getApplicationContext(), book.getProfimage().toString(), Toast.LENGTH_LONG).show();
+//                viewDialog.hideDialog();
                 Picasso.get().load(book.getProfimage()).into(headerProfileImage);
+                viewDialog.hideDialog();
 
 
             }
@@ -345,6 +357,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onFailure(Call<GetProfilePhotoItem> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
+                viewDialog.hideDialog();
             }
         });
 
