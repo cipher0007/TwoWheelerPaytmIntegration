@@ -3,13 +3,15 @@ package com.cipher0007.twowheeler;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -22,7 +24,6 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -30,31 +31,28 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import com.cipher0007.twowheeler.Helpers.FetchURL;
 import com.cipher0007.twowheeler.Helpers.TaskLoadedCallback;
-import com.cipher0007.twowheeler.Network.Adapter.BikeNoAdapter;
 import com.cipher0007.twowheeler.Network.Adapter.RateAdapter;
-import com.cipher0007.twowheeler.Network.Adapter.YourBookingAdapter;
 import com.cipher0007.twowheeler.Network.ApiClient;
 import com.cipher0007.twowheeler.Network.ApiServices;
 import com.cipher0007.twowheeler.Network.Models.GetProfilePhotoItem;
+import com.cipher0007.twowheeler.Network.Models.LocationItem;
+import com.cipher0007.twowheeler.Network.Models.MyNotifIcation;
 import com.cipher0007.twowheeler.Network.Models.ProfilePhotoItem;
 import com.cipher0007.twowheeler.Network.Models.Rate;
-import com.cipher0007.twowheeler.Network.Models.YourBookingItem;
 import com.cipher0007.twowheeler.OtpVerification.SharedPrefManager;
-import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -82,10 +80,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, NavigationView.OnNavigationItemSelectedListener {
     LatLng clementtown, Mylocation, placespineer;
     private Polyline currentPolyline;
-    private MarkerOptions place1, place2;
+    private MarkerOptions place1, place2, loc;
+    private static boolean notif_flag = false;
+    private static ArrayList<MyNotifIcation> notifList = new ArrayList<>();
+
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private LinearLayout layoutBottomSheet;
@@ -101,15 +102,38 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private Bitmap profileBitmap;
     private Uri mCropImageUri;
     ViewDialog viewDialog;
+    Spinner spinner = null;
+    private LottieAnimationView lottieAnimationView;
 //private ImageView mRightArrow;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         TextView txtbook = findViewById(R.id.txtbookride);
-        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner(spinner);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        //registerReceiver(fcmReciever, new IntentFilter(MyFirebaseMessagingService.INTENT_FILTER));
+
+
+
+        Thread thread2 = new Thread() {
+            @Override
+            public void run() {
+
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SpinnerNetworkCall();
+                    }
+                });
+            }
+        };
+        thread2.start();
+
+
+        // spinner(spinner);
         viewDialog = new ViewDialog(MapActivity.this);
 
         // mRightArrow = findViewById(R.id.bottom_sheet_right_arrow);
@@ -164,7 +188,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         // LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         rateRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         //rateRecyclerView.setLayoutManager(manager);
-        NetworkCall();
+
+        Thread thread1 = new Thread() {
+            @Override
+            public void run() {
+
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        NetworkCall();
+                    }
+                });
+            }
+        };
+        thread1.start();
 
 //        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
 //                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -175,7 +213,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
-
         //TextView navUsername = (TextView) headerView.findViewById(R.id.navUsername);
         //navUsername.setText("Your Text Here");
         SharedPrefManager sharedPrefManager = new SharedPrefManager(MapActivity.this);
@@ -183,7 +220,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         txtHeaderName = headerView.findViewById(R.id.txtHeaderName);
         txtHeaderNo = headerView.findViewById(R.id.txtHeaderNo);
         headerProfileImage = headerView.findViewById(R.id.profilepic);
-
+        lottieAnimationView = headerView.findViewById(R.id.lottieloader);
 
         Thread thread = new Thread() {
             @Override
@@ -193,7 +230,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        viewDialog.showDialog();
+                        lottieAnimationView.setVisibility(View.VISIBLE);
                         getProfileImage();
                     }
                 });
@@ -306,8 +343,29 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
+
+
+    private BroadcastReceiver fcmReciever = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+
+            notif_flag = true;
+            invalidateOptionsMenu();
+
+
+            String title = intent.getStringExtra("title");
+            String code = intent.getStringExtra("intent");
+            notifList.add(new MyNotifIcation(title, code));
+            // Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+//            if (fragment instanceof NotifFragment) {
+//                ((NotifFragment) fragment).updateUI(notifList);
+//            }
+        }
+    };
+
     private void setProfilePhoto(String photo) {
-        viewDialog.showDialog();
+        lottieAnimationView.setVisibility(View.VISIBLE);
         ApiServices apiService = ApiClient.getClient(getApplicationContext()).create(ApiServices.class);
 
         Call<ProfilePhotoItem> call = apiService.UploadProfilePhoto(new SharedPrefManager(getApplicationContext()).getPhoneNumber(), photo);
@@ -318,17 +376,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                 Toast.makeText(getApplicationContext(), book.getError(), Toast.LENGTH_LONG).show();
                 if (book.getError().equalsIgnoreCase("false")) {
+                    lottieAnimationView.setVisibility(View.VISIBLE);
                     getProfileImage();
-                    viewDialog.hideDialog();
+
                 }
-                    viewDialog.hideDialog();
+                lottieAnimationView.setVisibility(View.INVISIBLE);
 
             }
 
             @Override
             public void onFailure(Call<ProfilePhotoItem> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
-                viewDialog.hideDialog();
+                lottieAnimationView.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -349,7 +408,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 Toast.makeText(getApplicationContext(), book.getProfimage().toString(), Toast.LENGTH_LONG).show();
 //                viewDialog.hideDialog();
                 Picasso.get().load(book.getProfimage()).into(headerProfileImage);
-                viewDialog.hideDialog();
+                lottieAnimationView.setVisibility(View.INVISIBLE);
 
 
             }
@@ -357,36 +416,107 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onFailure(Call<GetProfilePhotoItem> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
-                viewDialog.hideDialog();
+                lottieAnimationView.setVisibility(View.INVISIBLE);
             }
         });
 
 
     }
 
-    private void spinner(Spinner spinner) {
-        // Spinner click listener
-        spinner.setOnItemSelectedListener(this);
 
-        // Spinner Drop down elements
-        List<String> categories = new ArrayList<String>();
-        categories.add("IT park Sahastradhara Road, Near Police Station");
-        categories.add("Item 2");
-        categories.add("Item 3");
-        categories.add("Item 4");
-        categories.add("Item 5");
-        categories.add("Item 6");
+    private void SpinnerNetworkCall() {
 
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+        ApiServices apiService = ApiClient.getClient(this).create(ApiServices.class);
 
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+        Call<List<LocationItem>> call = apiService.LocationAll(new SharedPrefManager(getApplicationContext()).getPhoneNumber());
+        call.enqueue(new Callback<List<LocationItem>>() {
+            @Override
+            public void onResponse(Call<List<LocationItem>> call, Response<List<LocationItem>> response) {
+                Log.d("SUCCESS", response.message());
+                //List<LocationItem> contacts = new ArrayList<>();
 
-        // attaching data adapter to spinner
-        spinner.setAdapter(dataAdapter);
+
+                List<LocationItem> locationItem = response.body();
+                ArrayAdapter<LocationItem> dataAdapter = new ArrayAdapter<LocationItem>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, locationItem);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+                //mAdapter = new LocationAdapter(getApplicationContext(), locationItem);
+                spinner.setAdapter(dataAdapter);
+
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        LocationItem locationItem1 = (LocationItem) adapterView.getSelectedItem();
+                        displayUserData(locationItem1);
+
+
+//        // sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//
+//        // Showing selected spinner item
+//        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<LocationItem>> call, Throwable t) {
+                Log.d("FAIL", String.valueOf(t));
+
+
+            }
+        });
+
 
     }
+
+    public void getSelectedUser(View v) {
+        LocationItem locationItem = (LocationItem) spinner.getSelectedItem();
+        displayUserData(locationItem);
+    }
+
+    private void displayUserData(LocationItem locationItem) {
+        String name = locationItem.getLocationame();
+        Double lat = Double.valueOf(locationItem.getLatitude());
+        Double longi = Double.valueOf(locationItem.getLongitude());
+        placespineer = new LatLng(lat, longi);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(placespineer));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
+        mMap.getUiSettings().setMapToolbarEnabled(true);
+        loc = new MarkerOptions().position(new LatLng(lat, longi)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
+        mMap.addMarker(loc);
+        String userData = "Name: " + name + "\nlat: " + lat + "\nlong: " + longi;
+
+        Toast.makeText(getApplicationContext(), userData, Toast.LENGTH_LONG).show();
+    }
+//    private void spinner(Spinner spinner, LocationItem categories) {
+//        // Spinner click listener
+//
+//
+//        // Spinner Drop down elements
+////        List<String> categories = new ArrayList<String>();
+////        categories.add("IT park Sahastradhara Road, Near Police Station");
+////        categories.add("Item 2");
+////        categories.add("Item 3");
+////        categories.add("Item 4");
+////        categories.add("Item 5");
+////        categories.add("Item 6");
+//
+//        // Creating adapter for spinner
+////        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+////
+////        // Drop down layout style - list view with radio button
+////        dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+////
+////        // attaching data adapter to spinner
+////        spinner.setAdapter(dataAdapter);
+//
+//    }
 
 //    private void test() {
 //        String response="status=success:orderId=a089f02724ed4a8db6c069f6d30b3245:txnId=None:paymentId=MOJO7918005A76494611:token=qyFwLidQ0aBNNWlsmwHx1gHFhlt6A1";
@@ -442,9 +572,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     protected void onResume() {
         super.onResume();
-        place1 = new MarkerOptions().position(new LatLng(30.2653, 78.0110)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
-        place2 = new MarkerOptions().position(new LatLng(30.355977, 78.085342)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
-        placespineer = new LatLng(30.2653, 78.0110);
+
+//        registerReceiver(fcmReciever, new IntentFilter(
+//                MyFirebaseMessagingService.INTENT_FILTER));
+//        place1 = new MarkerOptions().position(new LatLng(30.2653, 78.0110)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
+//        place2 = new MarkerOptions().position(new LatLng(30.355977, 78.085342)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
+//
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -685,8 +818,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 //        mMap.addMarker(new MarkerOptions().position(cmttown1).title("Two Wheeler").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("helmet", 80, 80))));
 //        mMap.addMarker(new MarkerOptions().position(itpark).title("Two Wheeler").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("helmet", 80, 80))));
 
-        mMap.addMarker(place1);
-        mMap.addMarker(place2);
+//        mMap.addMarker(place1);
+//        mMap.addMarker(place2);
 
 
     }
@@ -736,20 +869,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         return true;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-        String item = parent.getItemAtPosition(position).toString();
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(placespineer));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
-        mMap.getUiSettings().setMapToolbarEnabled(true);
-        // sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+//        String item = parent.getItemAtPosition(position).toString();
+////        mMap.moveCamera(CameraUpdateFactory.newLatLng(placespineer));
+////        mMap.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
+////        mMap.getUiSettings().setMapToolbarEnabled(true);
+////        // sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+////
+////        // Showing selected spinner item
+//        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+//    }
+//
+//    @Override
+//    public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//    }
+//
 }
+

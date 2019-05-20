@@ -11,6 +11,24 @@ public class SharedPrefManager {
         this.context = context;
 
     }
+    public void removeAll(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("RideSelected", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+
+        SharedPreferences sharedPreferences1 = context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+        editor1.clear();
+        editor1.commit();
+
+        SharedPreferences sharedPreferences2 = context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = sharedPreferences2.edit();
+        editor2.clear();
+        editor2.commit();
+
+
+    }
 
     public void Ridetime(String time) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("RideTime", Context.MODE_PRIVATE);
