@@ -11,6 +11,9 @@ public class SharedPrefManager {
         this.context = context;
 
     }
+
+
+
     public void removeAll(){
         SharedPreferences sharedPreferences = context.getSharedPreferences("RideSelected", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -48,6 +51,9 @@ public void setSelectedRide(String hour,String price){
         SharedPreferences sharedPreferences = context.getSharedPreferences("RideSelected", Context.MODE_PRIVATE);
         return sharedPreferences.getString("hour", "");
     }
+
+
+
     public String getSelectedPrice() {
         SharedPreferences sharedPreferences = context.getSharedPreferences("RideSelected", Context.MODE_PRIVATE);
         return sharedPreferences.getString("price", "");
@@ -74,6 +80,40 @@ public void setSelectedRide(String hour,String price){
         editor.putBoolean("numberchck", isLogin);
         editor.commit();
     }
+
+
+    public void saveLocation(String location) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Location", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("loc", location);
+
+        editor.commit();
+    }
+
+    public String getLocation() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Location", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("loc", "");
+    }
+
+
+    public void saveBikeNoBikeName(String name,String number) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("bnobna", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("bna", name);
+        editor.putString("bno", number);
+
+        editor.commit();
+    }
+    public String getBikeName() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("bnobna", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("bna", "");
+    }
+
+    public String getBikeNumber() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("bnobna", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("bno", "");
+    }
+
 
     public boolean OtpVerified() {
         SharedPreferences sharedPreferences = context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);

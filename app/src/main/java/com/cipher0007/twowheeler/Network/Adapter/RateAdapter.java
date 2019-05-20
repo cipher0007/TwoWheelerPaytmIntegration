@@ -45,14 +45,14 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateViewHolder
     public void onBindViewHolder(@NonNull RateViewHolder rateViewHolder, int i) {
         final Rate iitem = list.get(i);
         rateViewHolder.txtHours.setText(iitem.getNoh());
-        rateViewHolder.txtRate.setText(iitem.getPrice());
+        rateViewHolder.txtRate.setText("₹"+iitem.getPrice());
         rateViewHolder.btnRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, iitem.getNoh().toString(), Toast.LENGTH_SHORT).show();
-                new SharedPrefManager(context).setSelectedRide(iitem.getNoh().toString(),iitem.getPrice().toString());
-                Intent intent=new Intent(context, com.cipher0007.twowheeler.BikeNo.class);
-               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                new SharedPrefManager(context).setSelectedRide(iitem.getNoh().toString(), iitem.getPrice().toString());
+                Intent intent = new Intent(context, com.cipher0007.twowheeler.BikeNo.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 
             }
@@ -74,9 +74,9 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateViewHolder
 
         public RateViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtHours=itemView.findViewById(R.id.txtHours);
-            txtRate=itemView.findViewById(R.id.txtPrice);
-            btnRide=itemView.findViewById(R.id.btnRide);
+            txtHours = itemView.findViewById(R.id.txtHours);
+            txtRate = itemView.findViewById(R.id.txtPrice);
+            btnRide = itemView.findViewById(R.id.btnRide);
 
         }
     }

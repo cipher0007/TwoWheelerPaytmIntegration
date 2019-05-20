@@ -2,6 +2,7 @@ package com.cipher0007.twowheeler.Network;
 
 import android.graphics.Bitmap;
 
+import com.cipher0007.twowheeler.Network.Models.AmountItem;
 import com.cipher0007.twowheeler.Network.Models.BikeNo;
 import com.cipher0007.twowheeler.Network.Models.FirstCheck;
 import com.cipher0007.twowheeler.Network.Models.GetProfilePhotoItem;
@@ -57,6 +58,11 @@ public interface ApiServices {
     @FormUrlEncoded
     @POST("android/fetchlocation.php")
     Call<List<LocationItem>> LocationAll(@Field("number") String number);
+
+    @FormUrlEncoded
+    @POST("android/billdetails.php")
+    Call<AmountItem> AmountPay(@Field("number") String number,
+                                     @Field("noh") String noh);
 
 
 }

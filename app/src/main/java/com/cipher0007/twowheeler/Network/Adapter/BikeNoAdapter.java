@@ -56,6 +56,7 @@ public class BikeNoAdapter extends RecyclerView.Adapter<BikeNoAdapter.BikeNoView
             viewHolder.linerupdateview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    new SharedPrefManager(context).saveBikeNoBikeName(iitem.getBikename().toString(), iitem.getBikeNumber().toString());
                     Intent intent=new Intent(context,ConfirmBookingFinal.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);

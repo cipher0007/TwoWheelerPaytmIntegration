@@ -12,28 +12,54 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cipher0007.twowheeler.Network.Adapter.YourBookingAdapter;
+import com.cipher0007.twowheeler.Network.ApiClient;
+import com.cipher0007.twowheeler.Network.ApiServices;
+import com.cipher0007.twowheeler.Network.Models.AmountItem;
+import com.cipher0007.twowheeler.Network.Models.YourBookingItem;
 import com.cipher0007.twowheeler.OtpVerification.SharedPrefManager;
 import com.github.jorgecastilloprz.FABProgressCircle;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import instamojo.library.InstamojoPay;
 import instamojo.library.InstapayListener;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ConfirmBookingFinal extends AppCompatActivity {
     private FloatingActionButton btnbook;
     FABProgressCircle fabProgressCircle;
     private String price;
+    ViewDialog viewDialog;
+    private TextView txtBikeName,txtBikeNumber,txtbikeNoOfHour,txtTotalAmount,txtTotalDiscount,txtToPay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_booking_final);
+        viewDialog = new ViewDialog(ConfirmBookingFinal.this);
         btnbook = findViewById(R.id.btnCnfrmbook);
         fabProgressCircle = findViewById(R.id.fabProgressCircle11);
         TextView txtcnrmbook = findViewById(R.id.txtconfrmbook);
         TextView txtcnrmbook1 = findViewById(R.id.txtconfrmbook1);
+
+        txtBikeName=findViewById(R.id.txtBikeName);
+        txtBikeNumber=findViewById(R.id.txtBikeNumber);
+        txtbikeNoOfHour=findViewById(R.id.txtNoOfHour);
+        txtTotalAmount=findViewById(R.id.txtItemTotal);
+        txtTotalDiscount=findViewById(R.id.txtTotalDiscount);
+        txtToPay=findViewById(R.id.txtToPay);
+
+        txtBikeName.setText(new SharedPrefManager(getApplicationContext()).getBikeName());
+        txtBikeNumber.setText(new SharedPrefManager(getApplicationContext()).getBikeNumber());
+        txtbikeNoOfHour.setText(new SharedPrefManager(getApplicationContext()).getSelectedhour());
+
+        NetworkCall();
 
         Typeface bold = Typeface.createFromAsset(getAssets(),
                 "Montserrat-Light.otf");
@@ -60,6 +86,37 @@ public class ConfirmBookingFinal extends AppCompatActivity {
             }
         });
     }
+
+    private void NetworkCall() {
+
+        viewDialog.showDialog();
+        ApiServices apiService = ApiClient.getClient(getApplicationContext()).create(ApiServices.class);
+
+        Call<AmountItem> call = apiService.AmountPay(new SharedPrefManager(getApplicationContext()).getPhoneNumber(),new SharedPrefManager(getApplicationContext()).getSelectedhour());
+        call.enqueue(new Callback<AmountItem>() {
+            @Override
+            public void onResponse(Call<AmountItem> call, Response<AmountItem> response) {
+
+                AmountItem book = response.body();
+                txtTotalAmount.setText("₹"+book.getPrice().toString());
+                txtTotalDiscount.setText("- "+"₹"+book.getDiscount().toString());
+                txtToPay.setText(" ₹"+book.getTopay().toString());
+                Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_LONG).show();
+                viewDialog.hideDialog();
+            }
+
+            @Override
+            public void onFailure(Call<AmountItem> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(MapActivity.this, "No timing are available!", Toast.LENGTH_SHORT).show();
+//                mShimmerViewContainer.stopShimmer();
+//                mShimmerViewContainer.setVisibility(View.GONE);
+                viewDialog.hideDialog();
+            }
+        });
+
+    }
+
 
     private void callInstamojoPay(String email, String phone, String amount, String purpose, String buyername) {
         final Activity activity = this;

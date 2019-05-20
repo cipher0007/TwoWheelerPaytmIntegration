@@ -484,7 +484,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         String name = locationItem.getLocationame();
         Double lat = Double.valueOf(locationItem.getLatitude());
         Double longi = Double.valueOf(locationItem.getLongitude());
+
+        new SharedPrefManager(getApplicationContext()).saveLocation(name);
+
         placespineer = new LatLng(lat, longi);
+
+
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(placespineer));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(14.0f));
         mMap.getUiSettings().setMapToolbarEnabled(true);
