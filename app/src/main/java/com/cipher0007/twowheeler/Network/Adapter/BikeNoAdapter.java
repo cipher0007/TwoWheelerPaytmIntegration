@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -65,9 +66,9 @@ public class BikeNoAdapter extends RecyclerView.Adapter<BikeNoAdapter.BikeNoView
 
         } else {
             viewHolder.circleImage.setImageResource(R.drawable.bookedcircle);
-            viewHolder.linerupdateview.setCardBackgroundColor(context.getResources().getColor(R.color.placeholder_bg));
+           // viewHolder.linerupdateview.setCardBackgroundColor(context.getResources().getColor(R.color.placeholder_bg));
             viewHolder.bikeName.setTextColor(Color.WHITE);
-            viewHolder.bikeNumber.setTextColor(Color.WHITE);
+viewHolder.view.setVisibility(View.VISIBLE);
           //  viewHolder.linerupdateview.setClickable(false);
             viewHolder.linerupdateview.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -94,6 +95,8 @@ public class BikeNoAdapter extends RecyclerView.Adapter<BikeNoAdapter.BikeNoView
       public ImageView bikeImage;
         public TextView bikeName, bikeNumber;
         public CardView linerupdateview;
+        public FrameLayout view;
+
 
         public BikeNoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,7 +105,8 @@ public class BikeNoAdapter extends RecyclerView.Adapter<BikeNoAdapter.BikeNoView
             bikeName = itemView.findViewById(R.id.BikeNameRecycler);
             bikeNumber = itemView.findViewById(R.id.BikeNumberRecycler);
             circleImage = itemView.findViewById(R.id.bookcolor);
-            linerupdateview = itemView.findViewById(R.id.linerupdateview);
+            view = itemView.findViewById(R.id.Colorbooked);
+            linerupdateview=itemView.findViewById(R.id.linerupdateview);
 
 
         }

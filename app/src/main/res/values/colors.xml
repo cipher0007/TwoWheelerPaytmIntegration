@@ -8,7 +8,8 @@
     <color name="colorAccent">#B2C248</color>
     <color name="colorLight">#BCAAA4</color>
     <color name="text_color">#484848</color>
-    <color name="placeholder_bg">#dddddd</color>
+    <color name="placeholder_bg">#50000000</color>
+
 
 
 
