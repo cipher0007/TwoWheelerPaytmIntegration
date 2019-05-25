@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    tools:showIn="@layout/activity_booking_finl"
     tools:context=".ConfirmBookingFinal">
 
     <LinearLayout
@@ -85,7 +88,7 @@
                         android:layout_gravity="right"
                         android:id="@+id/txtBikeName"
                         android:layout_marginTop="10dp"
-                        android:text="Activa 4G" />
+                        android:text="-" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -108,7 +111,7 @@
                         android:layout_gravity="right"
                         android:id="@+id/txtBikeNumber"
                         android:layout_marginTop="10dp"
-                        android:text="UK07 BS 5432" />
+                        android:text="-" />
                 </LinearLayout>
 
 
@@ -132,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:layout_marginTop="10dp"
-                        android:text="2" />
+                        android:text="-" />
                 </LinearLayout>
 
 
@@ -162,7 +165,7 @@
                         android:layout_gravity="right"
                         android:id="@+id/txtItemTotal"
                         android:layout_marginTop="10dp"
-                        android:text="200" />
+                        android:text="-" />
                 </LinearLayout>
 
 
@@ -188,7 +191,7 @@
                         android:layout_gravity="right"
                         android:id="@+id/txtTotalDiscount"
                         android:layout_marginTop="10dp"
-                        android:text="200" />
+                        android:text="-" />
                 </LinearLayout>
 
                 <View
@@ -221,7 +224,7 @@
                         android:id="@+id/txtToPay"
                         android:layout_gravity="right"
                         android:layout_marginTop="10dp"
-                        android:text="200" />
+                        android:text="-" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.cipher0007.twowheeler">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,7 +20,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <application
+
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -74,7 +79,8 @@
         <activity android:name=".MapActivity" />
         <activity
             android:name=".ConfirmBookingFinal"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:label="Confirm Ride"
+            android:theme="@style/AppTheme.NoAction"/>
         <activity
             android:name=".BookedSuccess"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -90,18 +96,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".IdProofUpload" />
-        <activity android:name=".BikeNo"
+        <activity
+            android:name=".BikeNo"
             android:label="Select Number"
-            android:theme="@style/AppTheme.NoAction"/>
-        <activity android:name=".YourBooking"
+            android:theme="@style/AppTheme.NoAction" />
+        <activity
+            android:name=".YourBooking"
             android:label="Your Trips"
-            android:theme="@style/AppTheme.NoAction"/>
+            android:theme="@style/AppTheme.NoAction" />
         <activity
             android:name=".BookingCurrentTrip"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
 
             android:resource="@drawable/eslogo" />
 
@@ -115,6 +124,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

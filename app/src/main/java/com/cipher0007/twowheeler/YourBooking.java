@@ -1,6 +1,9 @@
 package com.cipher0007.twowheeler;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +20,7 @@ import com.cipher0007.twowheeler.OtpVerification.SharedPrefManager;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +49,20 @@ RecyclerView recyclerView;
             }
         });
 
-        NetworkCall();
+        Thread thread1 = new Thread() {
+            @Override
+            public void run() {
+
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        NetworkCall();
+                    }
+                });
+            }
+        };
+        thread1.start();
     }
 
     private void NetworkCall() {
@@ -71,6 +88,25 @@ RecyclerView recyclerView;
 //                mShimmerViewContainer.stopShimmer();
 //                mShimmerViewContainer.setVisibility(View.GONE);
                 viewDialog.hideDialog();
+                CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
+                Snackbar.make(coordinatorLayout, "Oops! No internet connection", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                retry();
+                            }
+                        }).setActionTextColor(Color.RED).show();
+
+
+            }
+
+            public void retry() {
+                call.clone().enqueue(this);
+
+        //    }
+
+
+
             }
         });
 

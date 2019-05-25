@@ -7,14 +7,20 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +38,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,7 +50,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
+        setContentView(R.layout.splash);
 
 //        txtview = findViewById(R.id.txtAppName);
 //        Typeface bold = Typeface.createFromAsset(getAssets(),
@@ -91,6 +98,7 @@ public class SplashScreen extends AppCompatActivity {
 //            }
 //        }, SPLASH_TIME_OUT);
     }
+
 
     private void FirstCheckMyData() {
         ApiServices apiService = ApiClient.getClient(getApplicationContext()).create(ApiServices.class);
@@ -145,9 +153,26 @@ public class SplashScreen extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<FirstCheck> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
-                //viewDialog.hideDialog();
+                //Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
+
+                CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
+                Snackbar.make(coordinatorLayout, "Oops! No internet connection", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                retry();
+                            }
+                        }).setActionTextColor(Color.RED).show();
+
+
             }
+
+            public void retry() {
+                call.clone().enqueue(this);
+
+            }
+
+
         });
     }
 

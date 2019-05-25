@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import com.cipher0007.twowheeler.Network.Models.AmountItem;
 import com.cipher0007.twowheeler.Network.Models.BikeNo;
+import com.cipher0007.twowheeler.Network.Models.BookSuccess;
 import com.cipher0007.twowheeler.Network.Models.FirstCheck;
 import com.cipher0007.twowheeler.Network.Models.GetProfilePhotoItem;
 import com.cipher0007.twowheeler.Network.Models.LocationItem;
@@ -64,5 +65,14 @@ public interface ApiServices {
     Call<AmountItem> AmountPay(@Field("number") String number,
                                      @Field("noh") String noh);
 
-
+    @FormUrlEncoded
+    @POST("android/finalbooking.php")
+    Call<BookSuccess> BookSuccessful(@Field("number") String number,
+                                     @Field("bno") String bno,
+                                     @Field("noh") String noh,
+                                     @Field("paymentid") String paymentid,
+                                     @Field("dateofbook") String dateofbook,
+                                     @Field("timeofbook") String timeofbook,
+                                     @Field("bikeno") String bikeno,
+                                     @Field("token") String token);
 }

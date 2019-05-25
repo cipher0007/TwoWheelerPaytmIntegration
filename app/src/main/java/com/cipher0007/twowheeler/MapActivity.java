@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,7 +17,9 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -76,11 +77,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, NavigationView.OnNavigationItemSelectedListener {
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback, NavigationView.OnNavigationItemSelectedListener{
     LatLng clementtown, Mylocation, placespineer;
     private Polyline currentPolyline;
     private MarkerOptions place1, place2, loc;
@@ -116,7 +118,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //registerReceiver(fcmReciever, new IntentFilter(MyFirebaseMessagingService.INTENT_FILTER));
 
 
-
         Thread thread2 = new Thread() {
             @Override
             public void run() {
@@ -135,41 +136,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         // spinner(spinner);
         viewDialog = new ViewDialog(MapActivity.this);
-
-        // mRightArrow = findViewById(R.id.bottom_sheet_right_arrow);
-
-//        final RatingDialog ratingDialog = new RatingDialog.Builder(this)
-//
-//                .onRatingBarFormSumbit(new RatingDialog.Builder.RatingDialogFormListener() {
-//                    @Override
-//                    public void onFormSubmitted(String feedback) {
-//
-//                    }
-//                }).build();
-//
-//        ratingDialog.show();
-//        Intent i=new Intent(getApplicationContext(),BookingCurrentTrip.class);
-//        startActivity(i);
-//        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.parseColor("#20111111"));
         }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            Window w = getWindow();
-//            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                w.setStatusBarColor(Color.parseColor("#20111111"));
-//            }
-//        }
+
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmer();
         mShimmerViewContainer.setVisibility(View.VISIBLE);
-//        test();
-        // TextView txtprice = findViewById(R.id.txtprice);
         Typeface bold = Typeface.createFromAsset(getAssets(),
                 "Montserrat-Regular.otf");
         txtbook.setTypeface(bold);
-//        txtprice.setTypeface(bold);
         navicon = findViewById(R.id.navIcon);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navicon.setOnClickListener(new View.OnClickListener() {
@@ -204,17 +180,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         };
         thread1.start();
 
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.addDrawerListener(toggle);
-        // toggle.syncState();
-
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
-        //TextView navUsername = (TextView) headerView.findViewById(R.id.navUsername);
-        //navUsername.setText("Your Text Here");
+
         SharedPrefManager sharedPrefManager = new SharedPrefManager(MapActivity.this);
 
         txtHeaderName = headerView.findViewById(R.id.txtHeaderName);
@@ -270,25 +240,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         txtHeaderNo.setText(sharedPrefManager.getPhoneNumber());
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        // RelativeLayout bookNow = findViewById(R.id.btnBookNow);
 
-//        bookNow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-////                    if (sheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-////                        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-////                        //btnBottomSheet.setText("Close sheet");
-////                    } else {
-////                        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-////                       // btnBottomSheet.setText("Expand sheet");
-////                    }
-//
-////                Intent intent = new Intent(MapActivity.this, ConfirmBookingFinal.class);
-////                startActivity(intent);
-//
-//            }
-//        });
 
         sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -317,32 +269,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-//                if (isAdded()) {
-//                    animateBottomSheetArrows(slideOffset);
-//                }
+
             }
         });
-
-
-        place1 = new MarkerOptions().position(new LatLng(30.2653, 78.0110)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
-        place2 = new MarkerOptions().position(new LatLng(30.355977, 78.085342)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
-
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+//       place1 = new MarkerOptions().position(new LatLng(30.2653, 78.0110)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
+//        place2 = new MarkerOptions().position(new LatLng(30.355977, 78.085342)).title("Easy Scooter").icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("sc", 80, 80)));
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        //   MarkerPoints = new ArrayList<>();
-        //initButton();
-
-
         int size = navigationView.getMenu().size();
         for (int i = 0; i < size; i++) {
             navigationView.getMenu().getItem(i).setCheckable(false);
         }
     }
-
 
 
     private BroadcastReceiver fcmReciever = new BroadcastReceiver() {
@@ -374,7 +313,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             public void onResponse(Call<ProfilePhotoItem> call, Response<ProfilePhotoItem> response) {
                 ProfilePhotoItem book = response.body();
 
-                Toast.makeText(getApplicationContext(), book.getError(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), book.getError(), Toast.LENGTH_LONG).show();
                 if (book.getError().equalsIgnoreCase("false")) {
                     lottieAnimationView.setVisibility(View.VISIBLE);
                     getProfileImage();
@@ -386,9 +325,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             @Override
             public void onFailure(Call<ProfilePhotoItem> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
                 lottieAnimationView.setVisibility(View.INVISIBLE);
+                CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
+                Snackbar.make(coordinatorLayout, "Oops! No internet connection", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                retry();
+                            }
+                        }).setActionTextColor(Color.RED).show();
+
+
             }
+
+            public void retry() {
+                call.clone().enqueue(this);
+
+            }
+
+
+
         });
 
     }
@@ -405,7 +362,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 GetProfilePhotoItem book = response.body();
 
 
-                Toast.makeText(getApplicationContext(), book.getProfimage().toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), book.getProfimage().toString(), Toast.LENGTH_LONG).show();
 //                viewDialog.hideDialog();
                 Picasso.get().load(book.getProfimage()).into(headerProfileImage);
                 lottieAnimationView.setVisibility(View.INVISIBLE);
@@ -415,7 +372,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             @Override
             public void onFailure(Call<GetProfilePhotoItem> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
+              //  Toast.makeText(getApplicationContext(), t.getMessage().toString(), Toast.LENGTH_LONG).show();
+                CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
+                Snackbar.make(coordinatorLayout, "Oops! No internet connection", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                retry();
+                            }
+                        }).setActionTextColor(Color.RED).show();
+
+
+            }
+
+            public void retry() {
+                call.clone().enqueue(this);
+
+
+
+
                 lottieAnimationView.setVisibility(View.INVISIBLE);
             }
         });
@@ -467,9 +442,25 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onFailure(Call<List<LocationItem>> call, Throwable t) {
                 Log.d("FAIL", String.valueOf(t));
+                CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
+                Snackbar.make(coordinatorLayout, "Oops! No internet connection", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                retry();
+                            }
+                        }).setActionTextColor(Color.RED).show();
 
 
             }
+
+            public void retry() {
+                call.clone().enqueue(this);
+
+            }
+
+
+//        }
         });
 
 
@@ -488,7 +479,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         new SharedPrefManager(getApplicationContext()).saveLocation(name);
 
         placespineer = new LatLng(lat, longi);
-
 
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(placespineer));
@@ -560,10 +550,28 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             @Override
             public void onFailure(Call<List<Rate>> call, Throwable t) {
-                Toast.makeText(MapActivity.this, "No timing are available!", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(MapActivity.this, "No timing are available!", Toast.LENGTH_SHORT).show();
                 mShimmerViewContainer.stopShimmer();
                 mShimmerViewContainer.setVisibility(View.GONE);
+                CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
+                Snackbar.make(coordinatorLayout, "Oops! No internet connection", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                retry();
+                            }
+                        }).setActionTextColor(Color.RED).show();
+
+
             }
+
+            public void retry() {
+                call.clone().enqueue(this);
+
+            }
+
+
+//        }
         });
 
     }

@@ -38,6 +38,8 @@ public class ApiClient {
         return retrofit;
     }
 
+
+
     private static void initOkHttp(final Context context) {
         OkHttpClient.Builder httpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)

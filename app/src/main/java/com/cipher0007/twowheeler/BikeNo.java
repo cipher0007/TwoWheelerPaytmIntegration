@@ -1,6 +1,9 @@
 package com.cipher0007.twowheeler;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,6 +21,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,13 +46,26 @@ public class BikeNo extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),MapActivity.class));
+                startActivity(new Intent(getApplicationContext(), MapActivity.class));
             }
         });
 
-        LinearLayoutManager manager =  new GridLayoutManager(getApplicationContext(), 2);
+        LinearLayoutManager manager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(manager);
-        NetworkCall();
+        Thread thread1 = new Thread() {
+            @Override
+            public void run() {
+
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        NetworkCall();
+                    }
+                });
+            }
+        };
+        thread1.start();
     }
 
     private void NetworkCall() {
@@ -70,6 +87,20 @@ public class BikeNo extends AppCompatActivity {
             public void onFailure(Call<List<com.cipher0007.twowheeler.Network.Models.BikeNo>> call, Throwable t) {
                 mShimmerViewContainer.stopShimmer();
                 mShimmerViewContainer.setVisibility(View.GONE);
+                CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
+                Snackbar.make(coordinatorLayout, "Oops! No internet connection", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                retry();
+                            }
+                        }).setActionTextColor(Color.RED).show();
+
+
+            }
+
+            public void retry() {
+                call.clone().enqueue(this);
 
             }
         });
