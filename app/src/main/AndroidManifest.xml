@@ -55,7 +55,7 @@
         <activity
             android:name=".OtpVerification.VerifyPhone"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".OtpVerification.OtpVerfication"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -65,7 +65,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".OtpVerification.UserDetail"
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
 
         <meta-data

@@ -236,7 +236,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             }
         });
-        txtHeaderName.setText(sharedPrefManager.getFirstName() + " " + sharedPrefManager.getLastName());
+        txtHeaderName.setText(sharedPrefManager.getFirstName());
         txtHeaderNo.setText(sharedPrefManager.getPhoneNumber());
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -364,8 +364,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                 //Toast.makeText(getApplicationContext(), book.getProfimage().toString(), Toast.LENGTH_LONG).show();
 //                viewDialog.hideDialog();
-                Picasso.get().load(book.getProfimage()).into(headerProfileImage);
-                lottieAnimationView.setVisibility(View.INVISIBLE);
+              // if(!book.getProfimage().isEmpty()) {
+                try {
+
+
+                    Picasso.get().load(book.getProfimage()).error(R.drawable.eslogo).into(headerProfileImage);
+
+                }catch (Exception e){
+                    lottieAnimationView.setVisibility(View.INVISIBLE);
+                    Toast.makeText(MapActivity.this, "Set Your Profile Photo", Toast.LENGTH_SHORT).show();
+                   // headerProfileImage.setImageResource(R.drawable.photo);
+
+                }
+               //}
 
 
             }

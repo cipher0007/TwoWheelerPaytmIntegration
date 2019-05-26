@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/spinner"
                 android:spinnerMode="dialog"
-                android:prompt="@string/spinner_title"></Spinner>
+               ></Spinner>
             </LinearLayout>
 
 

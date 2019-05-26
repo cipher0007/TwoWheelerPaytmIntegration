@@ -25,7 +25,6 @@ public interface ApiServices {
     @FormUrlEncoded
     @POST("android/androregis.php")
     Call<Register> createAccount(@Field("fname") String fname,
-                                 @Field("lname") String lname,
                                  @Field("email") String email,
                                  @Field("number") String number,
                                  @Field("fileToUpload") String fileToUpload, @Field("fileToUpload1") String  fileToUpload1

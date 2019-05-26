@@ -1,9 +1,13 @@
 package com.cipher0007.twowheeler.OtpVerification;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +23,7 @@ import android.widget.Toast;
 import com.cipher0007.twowheeler.CurrentTrip;
 import com.cipher0007.twowheeler.MapActivity;
 import com.cipher0007.twowheeler.R;
+import com.cipher0007.twowheeler.SplashScreen;
 import com.github.jorgecastilloprz.FABProgressCircle;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -40,15 +45,17 @@ public class OtpVerfication extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+       // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_otp_verfication);
         etphoneNumber = findViewById(R.id.phonenumber_otp);
         addspace(etphoneNumber);
         countrySpinner = findViewById(R.id.spinnerCountries);
-        countrySpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, CountryData.countryNames));
+        countrySpinner.setPopupBackgroundResource(R.color.colorPrimaryDark);
+        countrySpinner.getBackground().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+        countrySpinner.setAdapter(new ArrayAdapter<String>(this, R.layout.spinner_item, CountryData.countryNames));
 
         starttext = findViewById(R.id.textstart);
 
@@ -141,23 +148,53 @@ public class OtpVerfication extends AppCompatActivity {
         });
 
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
 
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        if (new SharedPrefManager(getApplicationContext()).OtpVerified()) {
-            Intent intent = new Intent(this, UserDetail.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        } else {
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                Intent intent = new Intent(this, UserDetail.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            ActivityCompat.requestPermissions(OtpVerfication.this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+            return;
         }
+//        if (new SharedPrefManager(getApplicationContext()).OtpVerified()) {
+//            Intent intent = new Intent(this, UserDetail.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
+//        } else {
+//            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+//                Intent intent = new Intent(this, UserDetail.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(intent);
+//            }
+//        }
 //        if (new SharedPrefManager(getApplicationContext()).isLoggedIn()) {
 //            Intent intent = new Intent(this, MapActivity.class);
 //            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

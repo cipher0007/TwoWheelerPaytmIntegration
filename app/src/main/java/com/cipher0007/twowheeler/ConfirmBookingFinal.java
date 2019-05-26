@@ -122,7 +122,7 @@ public class ConfirmBookingFinal extends AppCompatActivity {
                 SharedPrefManager sharedPrefManager = new SharedPrefManager(ConfirmBookingFinal.this);
                 //Toast.makeText(ConfirmBookingFinal.this, sharedPrefManager.getEmail()+"\n"+sharedPrefManager.getPhoneNumber(), Toast.LENGTH_SHORT).show();
                 callInstamojoPay(sharedPrefManager.getEmail(), sharedPrefManager.getPhoneNumber(), "11", "Rent a Scooty from Easy Scooter for " + sharedPrefManager.getSelectedhour(),
-                        sharedPrefManager.getFirstName() + " " + sharedPrefManager.getLastName());
+                        sharedPrefManager.getFirstName());
             }
         });
 

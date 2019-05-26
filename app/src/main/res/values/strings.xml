@@ -8,4 +8,14 @@
 
     <string name="title_activity_test">test</string>
     <string name="spinner_title">Pick Up Drop Point</string>
+    <!--<string name="term_condition">Terms and condition and privacy policy</string>-->
+
+    <string name="d">
+
+<p>This is a html-formatted string with <b>bold</b> and <i>italic</i> text</p>
+<p>This is another paragraph of the same string.</p>
+
+
+</string>
+    <string name="term_condition"><p>By signing up, you agree to the </p><u>Terms and condition &amp; privacy policy</u></string>
 </resources>

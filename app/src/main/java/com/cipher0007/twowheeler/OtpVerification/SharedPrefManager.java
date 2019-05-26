@@ -63,11 +63,11 @@ public void setSelectedRide(String hour,String price){
         return sharedPreferences.getString("time", "");
     }
 
-    public void saveLoginDetails(String firstName, String lastName, String email, Boolean isLoggedin) {
+    public void saveLoginDetails(String firstName,  String email, Boolean isLoggedin) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("LoginDetails", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("firstName", firstName);
-        editor.putString("lastName", lastName);
+
         editor.putString("email", email);
         editor.putBoolean("islogin", isLoggedin);
         editor.commit();
